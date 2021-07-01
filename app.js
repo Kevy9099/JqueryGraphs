@@ -9,12 +9,13 @@ $(document).ready(function () {
 /* Global Variables */
 let labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple'];
 let colorRGBA = [
-  'rgba(238, 109, 72, 0.5)',
-  'rgba(170, 207, 210, 0.5)',
-  'rgba(250, 194, 31, 0.5)',
-  'rgba(127, 186, 99, 0.5)',
-  'rgba(99, 29, 76, 0.5)',
+  'rgba(238, 109, 72, 1)',
+  'rgba(170, 207, 210, 1)',
+  'rgba(250, 194, 31, 1)',
+  'rgba(127, 186, 99, 1)',
+  'rgba(99, 29, 76, 1)',
 ];
+let colorHex = ['#EE6D48', '#002D72', '#FAC21F', '#7FBA63', '#631D4C'];
 let hoverColor = ['#5cb85c', '#D74B4B', '#6685a4', '#f0ad4e', '#5bc0de'];
 
 //-----------------------------------------------//
@@ -69,7 +70,7 @@ function horizontalBar() {
           label: '# of Votes',
           data: [12, 19, 3, 5, 2],
           backgroundColor: colorRGBA,
-          borderColor: colorRGBA,
+          borderColor: 'black',
         },
       ],
     },
@@ -106,8 +107,8 @@ function pieChart() {
         {
           label: '# of Votes',
           data: [100, 70, 20, 50, 10],
-          backgroundColor: colorRGBA,
-          borderColor: colorRGBA,
+          backgroundColor: colorHex,
+          borderColor: 'black',
           hoverBackgroundColor: hoverColor,
           hoverOffset: 30,
         },
@@ -116,6 +117,10 @@ function pieChart() {
     options: {
       responsive: true,
       plugins: {
+        legend: {
+          onHover: handleHover,
+          onLeave: handleLeave,
+        },
         tooltip: {
           // enabled: false,
           usePointStyle: true,
@@ -147,8 +152,9 @@ function doughnutChart() {
         {
           label: '# of Votes',
           data: [100, 70, 20, 50, 10],
-          backgroundColor: colorRGBA,
-          borderColor: colorRGBA,
+          backgroundColor: colorHex,
+          borderColor: 'black',
+          hoverBackgroundColor: hoverColor,
         },
       ],
     },
@@ -158,6 +164,13 @@ function doughnutChart() {
         var activePoints = doughChart.getElementsAtEvent(e);
         var selectedIndex = activePoints[0]._index;
         alert(this.data.datasets[0].data[selectedIndex]);
+      },
+      plugins: {
+        legend: {
+          position: 'right',
+          onHover: handleHover,
+          onLeave: handleLeave,
+        },
       },
     },
   });
@@ -176,10 +189,11 @@ function lineChart() {
         {
           label: '# of Votes',
           data: [65, 59, 80, 81, 26, 55, 40],
-          fill: false,
-          borderColor: 'rgba(250, 194, 31, 0.6)',
-          pointRadius: 5,
-          pointBackgroundColor: 'black',
+          fill: true,
+          borderColor: 'rgba(0,0,0,0.5)',
+          pointStyle: 'star',
+          pointRadius: 8,
+          pointBackgroundColor: colorHex,
           pointHoverRadius: 20,
           pointHoverBackgroundColor: [
             'rgba(238, 109, 72, 1)',
@@ -188,7 +202,43 @@ function lineChart() {
             'rgba(127, 186, 99, 1)',
             'rgba(99, 29, 76, 1)',
           ],
-          pointBorderColor: 'black',
+          pointBorderColor: colorHex,
+        },
+        {
+          label: '# of Votes',
+          data: [70, 40, 59, 87, 24, 10],
+          fill: false,
+          borderColor: 'rgba(0,0,0,0.5)',
+          pointStyle: 'triangle',
+          pointRadius: 8,
+          pointBackgroundColor: colorHex,
+          pointHoverRadius: 20,
+          pointHoverBackgroundColor: [
+            'rgba(238, 109, 72, 1)',
+            'rgba(170, 207, 210, 1)',
+            'rgba(250, 194, 31, 1)',
+            'rgba(127, 186, 99, 1)',
+            'rgba(99, 29, 76, 1)',
+          ],
+          pointBorderColor: colorHex,
+        },
+        {
+          label: '# of Votes',
+          data: [33, 97, 26, 62, 77, 55, 40],
+          fill: false,
+          borderColor: 'rgba(0,0,0,0.5)',
+          pointStyle: 'circles',
+          pointRadius: 8,
+          pointBackgroundColor: colorHex,
+          pointHoverRadius: 20,
+          pointHoverBackgroundColor: [
+            'rgba(238, 109, 72, 1)',
+            'rgba(170, 207, 210, 1)',
+            'rgba(250, 194, 31, 1)',
+            'rgba(127, 186, 99, 1)',
+            'rgba(99, 29, 76, 1)',
+          ],
+          pointBorderColor: colorHex,
         },
       ],
     },
@@ -212,7 +262,7 @@ function lineChart() {
       plugins: {
         legend: {
           position: 'bottom',
-          color: 'black',
+          color: colorHex,
           labels: {
             font: {
               size: 20,
@@ -223,4 +273,24 @@ function lineChart() {
       },
     },
   });
+}
+
+function handleHover(evt, item, legend) {
+  legend.chart.data.datasets[0].backgroundColor.forEach(
+    (color, index, colors) => {
+      colors[index] =
+        index === item.index || color.length === 9 ? color : color + '4D';
+      console.log('hover');
+    }
+  );
+  legend.chart.update();
+}
+function handleLeave(evt, item, legend) {
+  legend.chart.data.datasets[0].backgroundColor.forEach(
+    (color, index, colors) => {
+      colors[index] = color.length === 9 ? color.slice(0, -2) : color;
+      console.log('leave');
+    }
+  );
+  legend.chart.update();
 }
