@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>jQuery Bar Grpah</title>
+    <title>ChartJs Graphs</title>
     <link rel="stylesheet" href="style.css" />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"></script>
@@ -10,22 +10,20 @@
   </head>
   <body>
     <div id="wrapper">
-      <div id="container">
-        <div class="chart-bar-wrapper">
-          <canvas id="vertChart"></canvas>
-        </div>
-        <div class="chart-bar-wrapper">
-          <canvas id="horiChart"></canvas>
-        </div>
-        <div class="chart-pie-wrapper">
-          <canvas id="pieChart"></canvas>
-        </div>
-        <div class="chart-pie-wrapper">
-          <canvas id="doughnutChart"></canvas>
-        </div>
-        <div class="chart-line-wrapper">
-          <canvas id="lineChart"></canvas>
-        </div>
+      <div class="bar-wrapper">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="line-wrapper">
+        <canvas id="lineChart"></canvas>
+      </div>
+      <div class="doughnut-wrapper">
+        <canvas id="doughnutChart"></canvas>
+      </div>
+      <div class="polar-wrapper">
+        <canvas id="polarChart"></canvas>
+      </div>
+      <div class="radar-wrapper">
+        <canvas id="radarChart"></canvas>
       </div>
     </div>
   </body>
