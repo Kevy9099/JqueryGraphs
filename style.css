@@ -4,39 +4,25 @@
 }
 
 #wrapper {
-  position: relative;
-  margin: 0 0 0 10%;
-  width: 100%;
+  width: calc(100% - 20px);
+  padding: 20px;
   height: 100%;
   font-family: Lato, Helvetica-Neue, monospace;
 }
 
-.bar-wrapper {
-  margin: 0 0 5% 0;
-  height: 80vh;
-  width: 80vw;
+.charts-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.line-wrapper {
-  margin: 0 0 5% 0;
-  height: 80vh;
-  width: 80vw;
-}
-
-.doughnut-wrapper {
-  margin: 0 0 5% 0;
-  height: 80vh;
-  width: 80vw;
-}
-
-.polar-wrapper {
-  margin: 0 0 5% 0;
-  height: 80vh;
-  width: 80vw;
-}
-
-.radar-wrapper {
-  margin: 0 0 5% 0;
-  height: 80vh;
-  width: 80vw;
+.chart-wrapper {
+  margin-left: 10px;
+  height:450px;
+  width: 500px;
+  border-radius: 2%;
+  box-shadow: -1px -1px 2px rgb(117, 117, 117) inset;
+  padding: 20px;
 }
