@@ -20,9 +20,14 @@
 
 .chart-wrapper {
   margin-left: 10px;
-  height:450px;
+  height: 450px;
   width: 500px;
   border-radius: 2%;
   box-shadow: -1px -1px 2px rgb(117, 117, 117) inset;
   padding: 20px;
+}
+
+.button {
+  width: 20%;
+  height: 5%;
 }
