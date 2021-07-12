@@ -73,9 +73,12 @@ let budgetAxis = [
   'Food Serv.',
   'Int., Sustain & Others',
 ];
+
 let budgetedAmount = [941397, 850559, 643668, 534659, 484689, 459940, 395690];
 
 let budgetedGoal = [800000, 900000, 700000, 600000, 400000, 500000, 400000];
+
+let altAmount = [534659, 941397, 484689, 643668, 459940, 850559, 395690];
 
 let revenueList = [
   'Tuition & Fees',
@@ -169,8 +172,6 @@ function barGraph1() {
       scales: {
         y: {
           beginAtZero: true,
-          max: 1000000,
-          min: 100000,
           title: {
             display: true,
             text: 'Budgeted Expenses',
@@ -180,8 +181,15 @@ function barGraph1() {
             },
           },
           ticks: {
+            // callback: function (value) {
+            //   return '$' + value / 1000 + 'k';
+            // },
+            // max: 1000000,
+            // min: 100000,
+            max: 0,
+            min: 100,
             callback: function (value) {
-              return '$' + value / 1000 + 'k';
+              return (value / 1000) * 0.1 + '%';
             },
             font: {
               weight: 'bold',
@@ -465,11 +473,6 @@ function barGraph3() {
     },
   };
   let barChart = new Chart(ctx, config);
-  // (function () {
-  //   document
-  //     .querySelector('#stack')
-  //     .addEventListener('click', function switchChart3() {});
-  // })();
 }
 
 //-----------------------------------------------//
@@ -1132,8 +1135,8 @@ function doughnutGraph3() {
             // color: textColors,
           },
           position: 'right',
-          onHover: handleHover,
-          onLeave: handleLeave,
+          // onHover: handleHover,
+          // onLeave: handleLeave,
         },
         tooltip: {
           displayColors: false,
@@ -1234,14 +1237,14 @@ function polarGraph1() {
 function polarGraph2() {
   let ctx = document.getElementById('polarChart2').getContext('2d');
 
-  let polarChart = new Chart(ctx, {
+  let config = {
+    type: 'polarArea',
     data: {
       labels: budgetToolTip,
       datasets: [
         {
-          type: 'polarArea',
           label: 'Total',
-          data: budgetedAmount,
+          data: altAmount,
           backgroundColor: barColors,
           borderColor: 'white',
           hoverBackgroundColor: barHoverColors,
@@ -1254,9 +1257,28 @@ function polarGraph2() {
       maintainAspectRatio: false,
       responsive: true,
       intersect: false,
+      scale: {
+        ticks: {
+          display: false,
+          maxTicksLimit: 1,
+        },
+      },
+      gridLines: {
+        display: false,
+      },
       plugins: {
         legend: {
           display: true,
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+          },
+          onHover: function (event, legendItem) {
+            document.getElementById('polarChart2').style.cursor = 'pointer';
+          },
+          onLeave: function () {
+            document.getElementById('polarChart2').style.cursor = 'default';
+          },
         },
         title: {
           display: true,
@@ -1280,21 +1302,79 @@ function polarGraph2() {
       animation: {
         animateRotate: true,
         animateScale: true,
-        duration: 2000,
-        easing: 'easeInOutQuint',
+        duration: 3000,
+        easing: 'easeInOutQuart',
       },
     },
-  });
+  };
+  let polarChart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#normal')
+      .addEventListener('click', function destoryChart() {
+        polarChart.config.options.animation = {
+          animateRotate: true,
+          animateScale: true,
+          duration: 3000,
+          easing: 'easeInOutQuart',
+        };
+        polarChart.destroy();
+        polarChart = new Chart(ctx, config);
+      });
+  })();
+  (function () {
+    document
+      .querySelector('#bounce')
+      .addEventListener('click', function destoryChart() {
+        polarChart.config.options.animation = {
+          animateRotate: true,
+          animateScale: true,
+          duration: 3000,
+          easing: 'easeInOutBounce',
+        };
+        polarChart.destroy();
+        polarChart = new Chart(ctx, config);
+      });
+  })();
+  (function () {
+    document
+      .querySelector('#elastic')
+      .addEventListener('click', function destoryChart() {
+        polarChart.config.options.animation = {
+          animateRotate: true,
+          animateScale: true,
+          duration: 2000,
+          easing: 'easeInOutElastic',
+        };
+        polarChart.destroy();
+        polarChart = new Chart(ctx, config);
+      });
+  })();
+  (function () {
+    document
+      .querySelector('#expo')
+      .addEventListener('click', function destoryChart() {
+        polarChart.config.options.animation = {
+          animateRotate: true,
+          animateScale: true,
+          duration: 3000,
+          easing: 'easeOutExpo',
+        };
+        polarChart.destroy();
+        polarChart = new Chart(ctx, config);
+      });
+  })();
 }
+
 function polarGraph3() {
   let ctx = document.getElementById('polarChart3').getContext('2d');
 
   let polarChart = new Chart(ctx, {
+    type: 'polarArea',
     data: {
       labels: budgetToolTip,
       datasets: [
         {
-          type: 'polarArea',
           label: 'Total',
           data: budgetedAmount,
           backgroundColor: pieColors,
@@ -1309,9 +1389,25 @@ function polarGraph3() {
       maintainAspectRatio: false,
       responsive: true,
       intersect: false,
+      scale: {
+        ticks: {
+          display: false,
+          maxTicksLimit: 1,
+        },
+      },
       plugins: {
         legend: {
           display: true,
+          position: 'left',
+          labels: {
+            usePointStyle: true,
+          },
+          onHover: function (event, legendItem) {
+            document.getElementById('polarChart3').style.cursor = 'pointer';
+          },
+          onLeave: function () {
+            document.getElementById('polarChart3').style.cursor = 'default';
+          },
         },
         title: {
           display: true,
@@ -1321,6 +1417,7 @@ function polarGraph3() {
           },
         },
         tooltip: {
+          enabled: false,
           displayColors: false,
           titleFont: {
             weight: 'bold',
@@ -1332,6 +1429,7 @@ function polarGraph3() {
           yAlign: 'bottom',
         },
       },
+
       animation: {
         animateRotate: true,
         animateScale: true,
