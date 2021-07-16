@@ -186,8 +186,8 @@ function barGraph1() {
             // },
             // max: 1000000,
             // min: 100000,
-            max: 0,
-            min: 100,
+            max: 100,
+            min: 0,
             callback: function (value) {
               return (value / 1000) * 0.1 + '%';
             },
@@ -951,11 +951,11 @@ function doughnutGraph1() {
   let ctx = document.getElementById('doughnutChart1').getContext('2d');
 
   let doughChart = new Chart(ctx, {
-    type: 'doughnut',
     data: {
       labels: netAssets,
       datasets: [
         {
+          type: 'doughnut',
           label: 'Total',
           data: netAmount,
           backgroundColor: barColors,
