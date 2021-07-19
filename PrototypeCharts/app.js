@@ -702,7 +702,7 @@ function pieChart5() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInBounce',
+        easing: 'easeInOutCirc',
       },
     },
   };
@@ -788,7 +788,7 @@ function pieChart6() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInBounce',
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -1191,7 +1191,7 @@ function polarAreaChart() {
         animateRotate: true,
         animateScale: true,
         duration: 3000,
-        easing: 'easeInOutQuart',
+        easing: 'easeInOutBounce',
       },
     },
   };
