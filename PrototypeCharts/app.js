@@ -1,3 +1,5 @@
+console.log(Chart.defaults);
+
 // Initialize
 $(document).ready(function () {
   doubleLineChart();
@@ -10,7 +12,40 @@ $(document).ready(function () {
   doubleBarChart1();
   doubleBarChart2();
   polarAreaChart();
+
+  Utils.isElementInView($('#doubleLineChart'), false);
+
 });
+
+function Utils() {
+
+}
+
+Utils.prototype = {
+    constructor: Utils,
+    isElementInView: function (element, fullyInView) {
+        var pageTop = $(window).scrollTop();
+        var pageBottom = pageTop + $(window).height();
+        var elementTop = $(element).offset().top;
+        var elementBottom = elementTop + $(element).height();
+
+        if (fullyInView === true) {
+            return ((pageTop < elementTop) && (pageBottom > elementBottom));
+        } else {
+            return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
+        }
+    }
+};
+
+var Utils = new Utils();
+
+function isScrolledIntoView(elem) {
+    let docViewTop = $(window).scrollTop();
+    let docViewBottom = docViewTop + $(window).height();
+    let elemTop = $(elem).offset().top;
+    let elemBottom = elemTop + $(elem).height();
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}
 
 //Global Style
 const primaryColor = ['rgba(0,45,114,1)'];
@@ -95,18 +130,6 @@ const general_FundRaised = [
   260761.76, 189788, 210500.0, 20625.97,
 ];
 
-//OnScroll Global Variables
-let inView = false;
-
-function scrolledIntoView(item) {
-  let viewTop = $(window).scrollTop();
-  let viewBottom = viewTop + $(window).height();
-  let chartTop = $(item).offset().top;
-  let chartBottom = chartTop + $(item).height();
-
-  return chartTop <= viewBottom && chartBottom >= viewTop;
-}
-
 // Double Line Chart: Horizon Data
 function doubleLineChart() {
   let ctx = $('#doubleLineChart');
@@ -175,7 +198,7 @@ function doubleLineChart() {
           },
 
           yAlign: 'top',
-        },
+        }
       },
       scales: {
         y: {
@@ -264,28 +287,11 @@ function doubleLineChart() {
       animation: {
         duration: 3000,
         easing: 'easeInBounce',
-      },
+      }
     },
   };
 
   let chart = new Chart(ctx, config);
-
-  function destoryChart() {
-    chart.destroy();
-  }
-
-  $(window).scroll(function () {
-    if (scrolledIntoView('#doubleLineChart')) {
-      if (inView) {
-        return;
-      }
-      inView = true;
-      destoryChart();
-      chart = new Chart(ctx, config);
-    } else {
-      inView = false;
-    }
-  });
 }
 
 // Pie Chart / Line Chart: Horizon Data
@@ -355,7 +361,7 @@ function pieChart1() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
       animation: {
         duration: 2000,
@@ -364,23 +370,6 @@ function pieChart1() {
     },
   };
   let chart = new Chart(ctx, config);
-
-  function destoryChart() {
-    chart.destroy();
-  }
-
-  $(window).scroll(function () {
-    if (scrolledIntoView('#pieChart1')) {
-      if (inView) {
-        return;
-      }
-      inView = true;
-      destoryChart();
-      chart = new Chart(ctx, config);
-    } else {
-      inView = false;
-    }
-  });
 }
 
 function pieChart2() {
@@ -449,7 +438,7 @@ function pieChart2() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
     },
   };
@@ -522,7 +511,7 @@ function pieChart3() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
     },
   };
@@ -595,7 +584,7 @@ function pieChart4() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
     },
   };
@@ -668,7 +657,7 @@ function pieChart5() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
     },
   };
@@ -741,7 +730,7 @@ function pieChart6() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
     },
   };
@@ -831,7 +820,7 @@ function doubleBarChart1() {
           },
 
           yAlign: 'bottom',
-        },
+        }
       },
       scales: {
         y: {
@@ -899,22 +888,6 @@ function doubleBarChart1() {
     },
   };
   let chart = new Chart(ctx, config);
-  function destoryChart() {
-    chart.destroy();
-  }
-
-  $(window).scroll(function () {
-    if (scrolledIntoView('#doubleBarChart1')) {
-      if (inView) {
-        return;
-      }
-      inView = true;
-      destoryChart();
-      chart = new Chart(ctx, config);
-    } else {
-      inView = false;
-    }
-  });
 }
 
 function doubleBarChart2() {
@@ -979,7 +952,7 @@ function doubleBarChart2() {
           },
 
           yAlign: 'bottom',
-        },
+        }
       },
       scales: {
         y: {
@@ -1046,23 +1019,8 @@ function doubleBarChart2() {
       },
     },
   };
-  let chart = new Chart(ctx, config);
-  function destoryChart() {
-    chart.destroy();
-  }
 
-  $(window).scroll(function () {
-    if (scrolledIntoView('#doubleBarChart2')) {
-      if (inView) {
-        return;
-      }
-      inView = true;
-      destoryChart();
-      chart = new Chart(ctx, config);
-    } else {
-      inView = false;
-    }
-  });
+  let chart = new Chart(ctx, config);
 }
 
 // Polar Graph: General
@@ -1145,7 +1103,7 @@ function polarAreaChart() {
             size: 18,
           },
           yAlign: 'bottom',
-        },
+        }
       },
       animation: {
         animateRotate: true,
@@ -1156,21 +1114,4 @@ function polarAreaChart() {
     },
   };
   let chart = new Chart(ctx, config);
-
-  function destoryChart() {
-    chart.destroy();
-  }
-
-  $(window).scroll(function () {
-    if (scrolledIntoView('#polarAreaChart')) {
-      if (inView) {
-        return;
-      }
-      inView = true;
-      destoryChart();
-      chart = new Chart(ctx, config);
-    } else {
-      inView = false;
-    }
-  });
 }
