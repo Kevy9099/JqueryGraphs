@@ -14,38 +14,27 @@ $(document).ready(function () {
   polarAreaChart();
 
   Utils.isElementInView($('#doubleLineChart'), false);
-
 });
 
-function Utils() {
-
-}
+function Utils() {}
 
 Utils.prototype = {
-    constructor: Utils,
-    isElementInView: function (element, fullyInView) {
-        var pageTop = $(window).scrollTop();
-        var pageBottom = pageTop + $(window).height();
-        var elementTop = $(element).offset().top;
-        var elementBottom = elementTop + $(element).height();
+  constructor: Utils,
+  isElementInView: function (element, fullyInView) {
+    var pageTop = $(window).scrollTop();
+    var pageBottom = pageTop + $(window).height();
+    var elementTop = $(element).offset().top;
+    var elementBottom = elementTop + $(element).height();
 
-        if (fullyInView === true) {
-            return ((pageTop < elementTop) && (pageBottom > elementBottom));
-        } else {
-            return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
-        }
+    if (fullyInView === true) {
+      return pageTop < elementTop && pageBottom > elementBottom;
+    } else {
+      return elementTop <= pageBottom && elementBottom >= pageTop;
     }
+  },
 };
 
 var Utils = new Utils();
-
-function isScrolledIntoView(elem) {
-    let docViewTop = $(window).scrollTop();
-    let docViewBottom = docViewTop + $(window).height();
-    let elemTop = $(elem).offset().top;
-    let elemBottom = elemTop + $(elem).height();
-    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
-}
 
 //Global Style
 const primaryColor = ['rgba(0,45,114,1)'];
@@ -145,7 +134,7 @@ function doubleLineChart() {
         borderColor: primaryColor,
         backgroundColor: primaryColor,
         pointBackgroundColor: primaryColor,
-        pointHoverBackgroundColor: primaryHoverColor,
+        pointHoverBackgroundColor: secondaryHoverColor,
         pointRadius: 6,
         pointHoverRadius: 15,
         yAxisID: 'y',
@@ -153,9 +142,9 @@ function doubleLineChart() {
       {
         label: 'Fund Raised',
         data: data2,
-        borderColor: secondaryColor,
+        borderColor: 'black',
         backgroundColor: secondaryColor,
-        pointBackgroundColor: secondaryColor,
+        pointBackgroundColor: 'black',
         pointHoverBackgroundColor: secondaryHoverColor,
         pointRadius: 6,
         pointHoverRadius: 15,
@@ -198,7 +187,7 @@ function doubleLineChart() {
           },
 
           yAlign: 'top',
-        }
+        },
       },
       scales: {
         y: {
@@ -287,11 +276,19 @@ function doubleLineChart() {
       animation: {
         duration: 3000,
         easing: 'easeInBounce',
-      }
+      },
     },
   };
 
   let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#line-animate')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 // Pie Chart / Line Chart: Horizon Data
@@ -305,7 +302,7 @@ function pieChart1() {
       {
         label: 'Roles',
         data: data1,
-        borderColor: secondaryColor,
+        borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
@@ -361,7 +358,7 @@ function pieChart1() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
       },
       animation: {
         duration: 2000,
@@ -370,6 +367,14 @@ function pieChart1() {
     },
   };
   let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#pie-animate1')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function pieChart2() {
@@ -382,7 +387,7 @@ function pieChart2() {
       {
         label: 'Roles',
         data: data1,
-        borderColor: secondaryColor,
+        borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
@@ -438,24 +443,36 @@ function pieChart2() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
+      },
+      animation: {
+        duration: 2000,
+        easing: 'easeInBounce',
       },
     },
   };
   let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#pie-animate2')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function pieChart3() {
-  const ctx = $('#pieChart3');
+  let ctx = $('#pieChart3');
   const labels = pieYear_Label;
   const data1 = pieYear_FY19;
-  const data = {
+  let data = {
     labels: labels,
     datasets: [
       {
         label: 'Roles',
         data: data1,
-        borderColor: secondaryColor,
+        borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
@@ -464,7 +481,7 @@ function pieChart3() {
       },
     ],
   };
-  const config = {
+  let config = {
     type: 'pie',
     data: data,
     options: {
@@ -511,24 +528,36 @@ function pieChart3() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
+      },
+      animation: {
+        duration: 2000,
+        easing: 'easeInBounce',
       },
     },
   };
-  const chart = new Chart(ctx, config);
+  let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#pie-animate3')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function pieChart4() {
-  const ctx = $('#pieChart4');
+  let ctx = $('#pieChart4');
   const labels = pieYear_Label;
   const data1 = pieYear_FY18;
-  const data = {
+  let data = {
     labels: labels,
     datasets: [
       {
         label: 'Roles',
         data: data1,
-        borderColor: secondaryColor,
+        borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
@@ -537,7 +566,7 @@ function pieChart4() {
       },
     ],
   };
-  const config = {
+  let config = {
     type: 'pie',
     data: data,
     options: {
@@ -584,24 +613,36 @@ function pieChart4() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
+      },
+      animation: {
+        duration: 2000,
+        easing: 'easeInBounce',
       },
     },
   };
-  const chart = new Chart(ctx, config);
+  let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#pie-animate4')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function pieChart5() {
-  const ctx = $('#pieChart5');
+  let ctx = $('#pieChart5');
   const labels = pieYear_Label;
   const data1 = pieYear_FY17;
-  const data = {
+  let data = {
     labels: labels,
     datasets: [
       {
         label: 'Roles',
         data: data1,
-        borderColor: secondaryColor,
+        borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
@@ -610,7 +651,7 @@ function pieChart5() {
       },
     ],
   };
-  const config = {
+  let config = {
     type: 'pie',
     data: data,
     options: {
@@ -657,33 +698,46 @@ function pieChart5() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
+      },
+      animation: {
+        duration: 2000,
+        easing: 'easeInBounce',
       },
     },
   };
-  const chart = new Chart(ctx, config);
+  let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#pie-animate5')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function pieChart6() {
-  const ctx = $('#pieChart6');
+  let ctx = $('#pieChart6');
   const labels = pieYear_Label;
   const data1 = pieYear_FY16;
-  const data = {
+  let data = {
     labels: labels,
     datasets: [
       {
         label: 'Roles',
         data: data1,
-        borderColor: secondaryColor,
+        borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
-        borderRadius: 5,
+
+        borderWidth: 2,
         hoverOffset: 30,
       },
     ],
   };
-  const config = {
+  let config = {
     type: 'pie',
     data: data,
     options: {
@@ -730,11 +784,23 @@ function pieChart6() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
+      },
+      animation: {
+        duration: 2000,
+        easing: 'easeInBounce',
       },
     },
   };
-  const chart = new Chart(ctx, config);
+  let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#pie-animate6')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function handleHover(evt, item, legend) {
@@ -770,7 +836,7 @@ function doubleBarChart1() {
         type: 'bar',
         label: 'FY21 - Giving %',
         data: data1,
-        borderColor: 'rgba(0,0,0,1)',
+        borderColor: 'white',
         backgroundColor: primaryColor,
         borderRadius: 5,
         borderWidth: 2,
@@ -779,7 +845,7 @@ function doubleBarChart1() {
         type: 'bar',
         label: 'FY20 - Giving %',
         data: data2,
-        borderColor: 'rgba(0,0,0,0.8)',
+        borderColor: 'white',
         backgroundColor: secondaryColor,
         borderRadius: 5,
         borderWidth: 2,
@@ -820,7 +886,7 @@ function doubleBarChart1() {
           },
 
           yAlign: 'bottom',
-        }
+        },
       },
       scales: {
         y: {
@@ -883,11 +949,19 @@ function doubleBarChart1() {
         },
       },
       animation: {
-        duration: 3000,
+        duration: 2000,
       },
     },
   };
   let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#bar-animate1')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 function doubleBarChart2() {
@@ -902,7 +976,7 @@ function doubleBarChart2() {
         type: 'bar',
         label: 'FY21 - Role Participation %',
         data: data1,
-        borderColor: 'rgba(0,0,0,1)',
+        borderColor: 'white',
         backgroundColor: primaryColor,
         borderRadius: 5,
         borderWidth: 2,
@@ -911,7 +985,7 @@ function doubleBarChart2() {
         type: 'bar',
         label: 'FY20 - Role Participation %',
         data: data2,
-        borderColor: 'rgba(0,0,0,0.8)',
+        borderColor: 'white',
         backgroundColor: secondaryColor,
         borderRadius: 5,
         borderWidth: 2,
@@ -952,7 +1026,7 @@ function doubleBarChart2() {
           },
 
           yAlign: 'bottom',
-        }
+        },
       },
       scales: {
         y: {
@@ -1021,6 +1095,14 @@ function doubleBarChart2() {
   };
 
   let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#bar-animate2')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }
 
 // Polar Graph: General
@@ -1103,7 +1185,7 @@ function polarAreaChart() {
             size: 18,
           },
           yAlign: 'bottom',
-        }
+        },
       },
       animation: {
         animateRotate: true,
@@ -1114,4 +1196,12 @@ function polarAreaChart() {
     },
   };
   let chart = new Chart(ctx, config);
+  (function () {
+    document
+      .querySelector('#polar-animate')
+      .addEventListener('click', function destoryChart() {
+        chart.destroy();
+        chart = new Chart(ctx, config);
+      });
+  })();
 }

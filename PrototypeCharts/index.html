@@ -6,23 +6,16 @@
     <link rel="stylesheet" href="style.css" />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"
-      integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"
-      integrity="sha512-NxlWEbNbTV6acWnTsWRLIiwzOw0IwHQOYUCKBiu/NqZ+5jSy7gjMbpYI+/4KvaNuZ1qolbw+Vnd76pbIUYEG8g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"></script>
     <script src="/PrototypeCharts/app.js"></script>
   </head>
   <body>
     <div class="wrapper">
       <h1 class="wrapper-header">Horizon: Double Line Chart</h1>
+      <div class="button-container">
+        <button class="line-button" id="line-animate">Animate</button>
+      </div>
       <div class="charts-list">
         <div class="chart-item">
           <canvas id="doubleLineChart"></canvas>
@@ -31,6 +24,10 @@
     </div>
     <div class="wrapper">
       <h1 class="wrapper-header">Horizon: Pie Chart</h1>
+      <div class="button-container">
+        <button class="pie-button1" id="pie-animate1">Animate</button>
+        <button class="pie-button2" id="pie-animate2">Animate</button>
+      </div>
       <div class="charts-list">
         <div class="chart-item">
           <canvas id="pieChart1"></canvas>
@@ -38,12 +35,24 @@
         <div class="chart-item">
           <canvas id="pieChart2"></canvas>
         </div>
+      </div>
+      <div class="button-container">
+        <button class="pie-button1" id="pie-animate3">Animate</button>
+        <button class="pie-button2" id="pie-animate4">Animate</button>
+      </div>
+      <div class="charts-list">
         <div class="chart-item">
           <canvas id="pieChart3"></canvas>
         </div>
         <div class="chart-item">
           <canvas id="pieChart4"></canvas>
         </div>
+      </div>
+      <div class="button-container">
+        <button class="pie-button1" id="pie-animate5">Animate</button>
+        <button class="pie-button2" id="pie-animate6">Animate</button>
+      </div>
+      <div class="charts-list">
         <div class="chart-item">
           <canvas id="pieChart5"></canvas>
         </div>
@@ -54,6 +63,10 @@
     </div>
     <div class="wrapper">
       <h1 class="wrapper-header">Annual Fund: Double Bar Chart</h1>
+      <div class="button-container">
+        <button class="bar-button1" id="bar-animate1">Animate</button>
+        <button class="bar-button2" id="bar-animate2">Animate</button>
+      </div>
       <div class="charts-list">
         <div class="chart-item">
           <canvas id="doubleBarChart1"></canvas>
@@ -65,6 +78,9 @@
     </div>
     <div class="wrapper">
       <h1 class="wrapper-header">General: Polar Area Chart</h1>
+      <div class="button-container">
+        <button class="polar-button" id="polar-animate">Animate</button>
+      </div>
       <div class="charts-list">
         <div class="chart-item">
           <canvas id="polarAreaChart"></canvas>
