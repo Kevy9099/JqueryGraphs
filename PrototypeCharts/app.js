@@ -1,42 +1,5 @@
-console.log(Chart.defaults);
-
 // Initialize
-$(document).ready(function () {
-  doubleLineChart();
-  pieChart1();
-  pieChart2();
-  pieChart3();
-  pieChart4();
-  pieChart5();
-  pieChart6();
-  doubleBarChart1();
-  doubleBarChart2();
-  polarAreaChart();
-
-  Utils.isElementInView($('#doubleLineChart'), false);
-});
-
-function Utils() {}
-
-Utils.prototype = {
-  constructor: Utils,
-  isElementInView: function (element, fullyInView) {
-    var pageTop = $(window).scrollTop();
-    var pageBottom = pageTop + $(window).height();
-    var elementTop = $(element).offset().top;
-    var elementBottom = elementTop + $(element).height();
-
-    if (fullyInView === true) {
-      return pageTop < elementTop && pageBottom > elementBottom;
-    } else {
-      return elementTop <= pageBottom && elementBottom >= pageTop;
-    }
-  },
-};
-
-var Utils = new Utils();
-
-//Global Style
+// Global Style
 const primaryColor = ['rgba(0,45,114,1)'];
 const secondaryColor = ['rgba(187,188,188,1)'];
 const primaryHoverColor = ['rgba(0,45,114,0.5)'];
@@ -54,7 +17,7 @@ const primaryHexColor = [
   '#002D72',
 ];
 
-//Global Labels
+// Global Labels
 const year_Labels = ['FY21', 'FY20', 'FY19', 'FY18', ' FY17', 'FY16'];
 const giving_Labels = [
   'Parents',
@@ -83,6 +46,7 @@ const pieYear_Label = [
   'Grandparent',
   'Misc.',
 ];
+
 const pieTotal_Donors = [163, 59, 59, 62, 90, 42];
 const pieYear_FY21 = [6.0, 6.0, 69.0, 10.0, 3.0, 0.0, 4.0, 2.0];
 const pieYear_FY20 = [25.0, 5.0, 41.0, 12.0, 8.0, 4.0, 0.0, 5.0];
@@ -114,10 +78,48 @@ const general_monthLabels = [
   'May',
   'June',
 ];
+
 const general_FundRaised = [
   50.0, 98966.99, 222302.0, 814409.52, 123268.03, 240959.5, 107754.29, 65195.0,
   260761.76, 189788, 210500.0, 20625.97,
 ];
+
+$(document).ready(function () {
+  doubleLineChart();
+  pieChart1();
+  pieChart2();
+  pieChart3();
+  pieChart4();
+  pieChart5();
+  pieChart6();
+  doubleBarChart1();
+  doubleBarChart2();
+  polarAreaChart();
+
+  // basic logic for tracking a single graph
+  let callback = (entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting === true) {
+        $('#doubleLineChart').parent().addClass('chart-shake');
+      } else {
+        $('#doubleLineChart').parent().removeClass('chart-shake');
+      }
+      console.log(entry.isIntersecting);
+    });
+  };
+  
+  let options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1.0
+  }
+  console.log(options);
+  let observer = new IntersectionObserver(callback , options);
+  
+  let target = document.querySelector('#doubleLineChart');
+  observer.observe(target);
+});
+
 
 // Double Line Chart: Horizon Data
 function doubleLineChart() {
