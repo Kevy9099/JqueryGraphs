@@ -1,4 +1,3 @@
-// Initialize
 // Global Style
 const primaryColor = ['rgba(0,45,114,1)'];
 const secondaryColor = ['rgba(187,188,188,1)'];
@@ -84,6 +83,7 @@ const general_FundRaised = [
   260761.76, 189788, 210500.0, 20625.97,
 ];
 
+// Initialize
 $(document).ready(function () {
   doubleLineChart();
   pieChart1();
@@ -98,28 +98,29 @@ $(document).ready(function () {
 
   // basic logic for tracking a single graph
   let callback = (entries, observer) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting === true) {
         $('#doubleLineChart').parent().addClass('chart-shake');
+        $('#doubleBarChart1').parent().addClass('chart-shake');
       } else {
         $('#doubleLineChart').parent().removeClass('chart-shake');
+        $('#doubleBarChart1').parent().removeClass('chart-shake');
       }
       console.log(entry.isIntersecting);
     });
   };
-  
+
   let options = {
     root: null,
-    rootMargin: '0px',
-    threshold: 1.0
-  }
+    rootMargin: '0px 0px 0px 0px',
+    threshold: 1.0,
+  };
   console.log(options);
-  let observer = new IntersectionObserver(callback , options);
-  
-  let target = document.querySelector('#doubleLineChart');
+  let observer = new IntersectionObserver(callback, options);
+
+  let target = document.querySelector('.chart-animation');
   observer.observe(target);
 });
-
 
 // Double Line Chart: Horizon Data
 function doubleLineChart() {
@@ -277,7 +278,7 @@ function doubleLineChart() {
       },
       animation: {
         duration: 3000,
-        easing: 'easeInBounce',
+        easing: 'easeOutBounce',
       },
     },
   };
