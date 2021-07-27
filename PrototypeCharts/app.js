@@ -97,29 +97,42 @@ $(document).ready(function () {
   polarAreaChart();
 
   // basic logic for tracking a single graph
-  let callback = (entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting === true) {
-        $('#doubleLineChart').parent().addClass('chart-shake');
-        $('#doubleBarChart1').parent().addClass('chart-shake');
-      } else {
-        $('#doubleLineChart').parent().removeClass('chart-shake');
-        $('#doubleBarChart1').parent().removeClass('chart-shake');
-      }
-      console.log(entry.isIntersecting);
-    });
-  };
-
   let options = {
     root: null,
     rootMargin: '0px 0px 0px 0px',
     threshold: 1.0,
   };
   console.log(options);
+
   let observer = new IntersectionObserver(callback, options);
 
-  let target = document.querySelector('.chart-animation');
-  observer.observe(target);
+  function callback(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting === true) {
+        $('#doubleLineChart').parent().addClass('chart-shake');
+        $('#pieChart2').parent().addClass('chart-slidein');
+        $('#pieChart4').parent().addClass('chart-bounce');
+        $('#doubleBarChart1').parent().addClass('chart-shake');
+        $('#doubleBarChart2').parent().addClass('chart-shake');
+        $('#polarAreaChart').parent().addClass('chart-grow');
+      } else {
+        $('#doubleLineChart').parent().removeClass('chart-shake');
+        $('#pieChart2').parent().removeClass('chart-slidein');
+        $('#pieChart4').parent().removeClass('chart-bounce');
+        $('#doubleBarChart1').parent().removeClass('chart-shake');
+        $('#doubleBarChart2').parent().removeClass('chart-shake');
+        $('#polarAreaChart').parent().removeClass('chart-grow');
+      }
+      console.log(entry.isIntersecting);
+    });
+  }
+
+  let target = document.querySelectorAll('.chart-animation');
+  target.forEach((item) => {
+    if (item) {
+      observer.observe(item);
+    }
+  });
 });
 
 // Double Line Chart: Horizon Data
@@ -297,8 +310,8 @@ function doubleLineChart() {
 // Pie Chart / Line Chart: Horizon Data
 function pieChart1() {
   let ctx = $('#pieChart1');
-  const labels = pieYear_Label;
-  const data1 = pieYear_FY21;
+  let labels = pieYear_Label;
+  let data1 = pieYear_FY21;
   let data = {
     labels: labels,
     datasets: [
@@ -382,8 +395,8 @@ function pieChart1() {
 
 function pieChart2() {
   let ctx = $('#pieChart2');
-  const labels = pieYear_Label;
-  const data1 = pieYear_FY20;
+  let labels = pieYear_Label;
+  let data1 = pieYear_FY20;
   let data = {
     labels: labels,
     datasets: [
@@ -467,8 +480,8 @@ function pieChart2() {
 
 function pieChart3() {
   let ctx = $('#pieChart3');
-  const labels = pieYear_Label;
-  const data1 = pieYear_FY19;
+  let labels = pieYear_Label;
+  let data1 = pieYear_FY19;
   let data = {
     labels: labels,
     datasets: [
@@ -552,8 +565,8 @@ function pieChart3() {
 
 function pieChart4() {
   let ctx = $('#pieChart4');
-  const labels = pieYear_Label;
-  const data1 = pieYear_FY18;
+  let labels = pieYear_Label;
+  let data1 = pieYear_FY18;
   let data = {
     labels: labels,
     datasets: [
@@ -637,8 +650,8 @@ function pieChart4() {
 
 function pieChart5() {
   let ctx = $('#pieChart5');
-  const labels = pieYear_Label;
-  const data1 = pieYear_FY17;
+  let labels = pieYear_Label;
+  let data1 = pieYear_FY17;
   let data = {
     labels: labels,
     datasets: [
@@ -722,8 +735,8 @@ function pieChart5() {
 
 function pieChart6() {
   let ctx = $('#pieChart6');
-  const labels = pieYear_Label;
-  const data1 = pieYear_FY16;
+  let labels = pieYear_Label;
+  let data1 = pieYear_FY16;
   let data = {
     labels: labels,
     datasets: [
@@ -829,9 +842,9 @@ function handleLeave(evt, item, legend) {
 
 function doubleBarChart1() {
   let ctx = $('#doubleBarChart1');
-  const labels = giving_Labels;
-  const data1 = annualFY21_Amount;
-  const data2 = annualFY20_Amount;
+  let labels = giving_Labels;
+  let data1 = annualFY21_Amount;
+  let data2 = annualFY20_Amount;
   let data = {
     labels: labels,
     datasets: [
@@ -969,9 +982,9 @@ function doubleBarChart1() {
 
 function doubleBarChart2() {
   let ctx = $('#doubleBarChart2');
-  const labels = role_PartLabels;
-  const data1 = annualFY21_Part;
-  const data2 = annualFY20_Part;
+  let labels = role_PartLabels;
+  let data1 = annualFY21_Part;
+  let data2 = annualFY20_Part;
   let data = {
     labels: labels,
     datasets: [
@@ -1111,8 +1124,8 @@ function doubleBarChart2() {
 // Polar Graph: General
 function polarAreaChart() {
   let ctx = $('#polarAreaChart');
-  const labels = general_monthLabels;
-  const data1 = general_FundRaised;
+  let labels = general_monthLabels;
+  let data1 = general_FundRaised;
   let data = {
     labels: labels,
     datasets: [
