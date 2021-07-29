@@ -16,6 +16,17 @@ const primaryHexColor = [
   '#002D72',
 ];
 
+const pieColors = [
+  '#002d72',
+  '#631d4c',
+  '#7fba63',
+  '#ee6d48',
+  '#aacfd2',
+  '#bbbcbc',
+  '#002D72',
+  '#002D72',
+];
+
 // Global Labels
 const year_Labels = ['FY21', 'FY20', 'FY19', 'FY18', ' FY17', 'FY16'];
 const giving_Labels = [
@@ -290,8 +301,8 @@ function doubleLineChart() {
         },
       },
       animation: {
-        duration: 3000,
-        easing: 'easeOutBounce',
+        duration: 2000,
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -322,7 +333,7 @@ function pieChart1() {
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
-        borderRadius: 5,
+        borderWidth: 2,
         hoverOffset: 30,
       },
     ],
@@ -378,7 +389,7 @@ function pieChart1() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInBounce',
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -407,7 +418,7 @@ function pieChart2() {
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
-        borderRadius: 5,
+        borderWidth: 2,
         hoverOffset: 30,
       },
     ],
@@ -463,7 +474,7 @@ function pieChart2() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInBounce',
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -492,7 +503,7 @@ function pieChart3() {
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
-        borderRadius: 5,
+        borderWidth: 2,
         hoverOffset: 30,
       },
     ],
@@ -548,7 +559,7 @@ function pieChart3() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInBounce',
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -577,7 +588,7 @@ function pieChart4() {
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
-        borderRadius: 5,
+        borderWidth: 2,
         hoverOffset: 30,
       },
     ],
@@ -633,7 +644,7 @@ function pieChart4() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInBounce',
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -662,7 +673,7 @@ function pieChart5() {
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
         hoverBorderColor: primaryColor,
-        borderRadius: 5,
+        borderWidth: 2,
         hoverOffset: 30,
       },
     ],
@@ -718,7 +729,7 @@ function pieChart5() {
       },
       animation: {
         duration: 2000,
-        easing: 'easeInOutCirc',
+        easing: 'easeOutElastic',
       },
     },
   };
@@ -746,8 +757,6 @@ function pieChart6() {
         borderColor: 'white',
         backgroundColor: primaryHexColor,
         hoverBackgroundColor: secondaryColor,
-        hoverBorderColor: primaryColor,
-
         borderWidth: 2,
         hoverOffset: 30,
       },
@@ -1159,13 +1168,6 @@ function polarAreaChart() {
         display: false,
       },
       plugins: {
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-          },
-        },
         legend: {
           display: true,
           position: 'bottom',
@@ -1207,7 +1209,7 @@ function polarAreaChart() {
         animateRotate: true,
         animateScale: true,
         duration: 3000,
-        easing: 'easeInOutBounce',
+        easing: 'easeInElastic',
       },
     },
   };
