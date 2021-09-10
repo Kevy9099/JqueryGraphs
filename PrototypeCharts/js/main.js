@@ -189,7 +189,6 @@ function doubleLineChart() {
       plugins: {
         legend: {
           display: false,
-          //   position: top,
           labels: {
             font: {
               family: 'Lato',

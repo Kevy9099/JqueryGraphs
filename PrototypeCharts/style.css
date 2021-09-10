@@ -1,6 +1,246 @@
+/*------------------------------- Root Styles -----------------------------------------*/
 * {
   margin: 0;
   padding: 0;
+}
+
+:root {
+  --primary-background: rgba(189, 189, 189, 0.5);
+  --secondary-background: rgba(211, 211, 211, 0.2);
+  --header-text: rgba(250, 194, 31);
+}
+
+body {
+  background: hsla(0, 0%, 0%, 1);
+}
+
+/*------------------------------- General Styles -----------------------------------------*/
+.wrapper {
+  width: calc(100% - 20px);
+  height: 100%;
+  padding: 20px;
+  line-height: 400px;
+  font-family: Lato, Helvetica-Neue, monospace;
+}
+
+.wrapper .wrapper-header {
+  color: var(--header-text);
+}
+
+.button-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.charts-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.chart-item {
+  width: calc(500px + 40px);
+  height: calc(450px + 40px);
+  margin: 0 0 20px 20px;
+  padding: 20px;
+  background-color: rgba(256, 256, 256, 0.1);
+  border: solid 1px white;
+  border-radius: 2%;
+  box-shadow: -1px -1px 2px rgba(73, 73, 73, 0.2) inset;
+}
+
+/*------------------------------- Button Styles -----------------------------------------*/
+.line-button {
+  width: 15%;
+  margin: 0px 0 10px 187px;
+  padding: 10px;
+  background: radial-gradient(
+    circle,
+    var(--primary-background) 0%,
+    var(--secondary-background) 100%
+  );
+  color: var(--header-text);
+  font-size: 16pt;
+  border-radius: 10px;
+}
+
+.pie-button1 {
+  width: 15%;
+  margin: 0px 0px 10px 190px;
+  padding: 10px;
+  background: radial-gradient(
+    circle,
+    var(--primary-background) 0%,
+    var(--secondary-background) 100%
+  );
+  color: var(--header-text);
+  font-size: 16pt;
+  border-radius: 10px;
+}
+
+.pie-button2 {
+  width: 15%;
+  margin: 0px 0px 10px 334px;
+  padding: 10px;
+  background: radial-gradient(
+    circle,
+    var(--primary-background) 0%,
+    var(--secondary-background) 100%
+  );
+  color: var(--header-text);
+  font-size: 16pt;
+  border-radius: 10px;
+}
+
+.bar-button1 {
+  width: 15%;
+  margin: 0px 0px 10px 190px;
+  padding: 10px;
+  background: radial-gradient(
+    circle,
+    var(--primary-background) 0%,
+    var(--secondary-background) 100%
+  );
+  color: var(--header-text);
+  font-size: 16pt;
+  border-radius: 10px;
+}
+
+.bar-button2 {
+  width: 15%;
+  margin: 0px 0px 10px 334px;
+  padding: 10px;
+  background: radial-gradient(
+    circle,
+    var(--primary-background) 0%,
+    var(--secondary-background) 100%
+  );
+  color: var(--header-text);
+  font-size: 16pt;
+  border-radius: 10px;
+}
+
+#bar-animate1 {
+  transition-duration: 0.7s;
+}
+
+#bar-animate2 {
+  transition-duration: 0.3s;
+  transition-property: transform;
+  transform-origin: 0 100%;
+}
+.polar-button {
+  width: 15%;
+  margin: 0px 0 10px 187px;
+  padding: 10px;
+  background: radial-gradient(
+    circle,
+    var(--primary-background) 0%,
+    var(--secondary-background) 100%
+  );
+  color: var(--header-text);
+  transition-property: transform;
+  transition-duration: 0.3s;
+  font-size: 16pt;
+  border-radius: 10px;
+}
+
+/*------------------------------- Manipulation Styles --------------------------------------*/
+.line-button:hover {
+  animation-name: pulse-grow;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#pie-animate1:hover {
+  animation-name: wobble-vertical;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+#pie-animate2:hover {
+  animation-name: wobble-horizontal;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+#pie-animate3:hover {
+  animation-name: wobble-to-bottom-right;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+#pie-animate4:hover {
+  animation-name: wobble-to-top-right;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+#pie-animate5:hover {
+  animation-name: wobble-top;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  transform-origin: 0 100%;
+}
+
+#pie-animate6:hover {
+  animation-name: wobble-bottom;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  transform-origin: 100% 0;
+}
+
+#bar-animate1:hover {
+  transform: scale(1.2);
+  transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+}
+
+#bar-animate2:hover {
+  transform: skew(-15deg);
+}
+
+.polar-button:hover {
+  transform: scale(1.1) rotate(4deg);
+}
+
+/*------------------------------- Animation -----------------------------------------*/
+.chart-shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.chart-slidein {
+  animation: slidein 3s cubic-bezier(0.36, 0.07, 0.19, 0.67) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.chart-bounce {
+  animation: bounce 5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.chart-grow {
+  animation: grow 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 @keyframes shake {
@@ -26,13 +266,6 @@
   }
 }
 
-.chart-shake {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
 @keyframes slidein {
   0% {
     transform: translate3d(-600px, 0, 0);
@@ -40,13 +273,6 @@
   50% {
     transform: translate3d(100px, 0, 0);
   }
-}
-
-.chart-slidein {
-  animation: slidein 3s cubic-bezier(0.36, 0.07, 0.19, 0.67) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 @keyframes bounce {
@@ -62,13 +288,6 @@
   }
 }
 
-.chart-bounce {
-  animation: bounce 5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
 @keyframes grow {
   0% {
     transform: scale(0);
@@ -79,117 +298,6 @@
   100% {
     transform: scale(1);
   }
-}
-
-.chart-grow {
-  animation: grow 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-:root {
-  --primary-background: rgb(238, 174, 202);
-  --secondary-background: rgba(148, 187, 233, 1);
-  --header-text: rgba(73, 73, 73);
-}
-
-body {
-  background: rgb(238, 174, 202);
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
-}
-
-.wrapper {
-  width: calc(100% - 20px);
-  padding: 20px;
-  height: 100%;
-  font-family: Lato, Helvetica-Neue, monospace;
-  line-height: 400px;
-}
-
-.wrapper .wrapper-header {
-  color: var(--header-text);
-}
-
-.charts-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.chart-item {
-  margin: 0 0 20px 20px;
-  height: calc(450px + 40px);
-  width: calc(500px + 40px);
-  border-radius: 2%;
-  background-color: rgba(256, 256, 256, 0.1);
-  box-shadow: -1px -1px 2px rgba(73, 73, 73, 0.2) inset;
-  padding: 20px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-}
-
-@keyframes pulse-grow {
-  to {
-    transform: scale(1.1);
-  }
-}
-
-.line-button {
-  width: 15%;
-  margin: 0px 0 10px 187px;
-  padding: 10px;
-  font-size: 16pt;
-  border-radius: 10px;
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
-}
-
-.line-button:hover {
-  animation-name: pulse-grow;
-  animation-duration: 0.3s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-.pie-button1 {
-  width: 15%;
-  padding: 10px;
-  margin: 0px 0px 10px 190px;
-  font-size: 16pt;
-  border-radius: 10px;
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
-}
-
-.pie-button2 {
-  width: 15%;
-  padding: 10px;
-  margin: 0px 0px 10px 334px;
-  font-size: 16pt;
-  border-radius: 10px;
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
 }
 
 @keyframes wobble-vertical {
@@ -347,110 +455,8 @@ body {
   }
 }
 
-#pie-animate1:hover {
-  animation-name: wobble-vertical;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-}
-
-#pie-animate2:hover {
-  animation-name: wobble-horizontal;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-}
-
-#pie-animate3:hover {
-  animation-name: wobble-to-bottom-right;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-}
-
-#pie-animate4:hover {
-  animation-name: wobble-to-top-right;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-}
-
-#pie-animate5:hover {
-  animation-name: wobble-top;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-  transform-origin: 0 100%;
-}
-
-#pie-animate6:hover {
-  animation-name: wobble-bottom;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-  transform-origin: 100% 0;
-}
-
-.bar-button1 {
-  width: 15%;
-  padding: 10px;
-  margin: 0px 0px 10px 190px;
-  font-size: 16pt;
-  border-radius: 10px;
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
-}
-
-.bar-button2 {
-  width: 15%;
-  padding: 10px;
-  margin: 0px 0px 10px 334px;
-  font-size: 16pt;
-  border-radius: 10px;
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
-}
-
-#bar-animate1 {
-  transition-duration: 0.7s;
-}
-
-#bar-animate1:hover {
-  transform: scale(1.2);
-  transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-}
-
-#bar-animate2 {
-  transition-duration: 0.3s;
-  transition-property: transform;
-  transform-origin: 0 100%;
-}
-
-#bar-animate2:hover {
-  transform: skew(-15deg);
-}
-
-.polar-button {
-  width: 15%;
-  margin: 0px 0 10px 187px;
-  padding: 10px;
-  font-size: 16pt;
-  border-radius: 10px;
-  background: radial-gradient(
-    circle,
-    var(--primary-background) 0%,
-    var(--secondary-background) 100%
-  );
-  transition-duration: 0.3s;
-  transition-property: transform;
-}
-
-.polar-button:hover {
-  transform: scale(1.1) rotate(4deg);
+@keyframes pulse-grow {
+  to {
+    transform: scale(1.1);
+  }
 }
