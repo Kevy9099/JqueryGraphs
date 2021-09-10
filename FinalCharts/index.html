@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChartJs Graphs</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"></script>
+    <script src="/PrototypeCharts/js/horizon.js"></script>
+    <script src="/PrototypeCharts/js/annual.js"></script>
+    <script src="/PrototypeCharts/js/chapters.js"></script>
+  </head>
+  <body>
+    <div class="chart-wrapper">
+      <h1 class="chart-wrapper-header">Horizon: Funds Raised Yearly</h1>
+      <div class="charts-list">
+        <div class="chart-item">
+          <canvas id="doubleLineChart" class="chart-animation"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrapper">
+      <h1 class="chart-wrapper-header">Horizon: Funds Raised By Donors</h1>
+      <div class="charts-list">
+        <div class="chart-item">
+          <canvas id="pieChart1" class="chart-animation"></canvas>
+        </div>
+        <div class="chart-item">
+          <canvas id="pieChart2" class="chart-animation"></canvas>
+        </div>
+      </div>
+      <div class="charts-list">
+        <div class="chart-item">
+          <canvas id="pieChart3" class="chart-animation"></canvas>
+        </div>
+        <div class="chart-item">
+          <canvas id="pieChart4" class="chart-animation"></canvas>
+        </div>
+      </div>
+      <div class="charts-list">
+        <div class="chart-item">
+          <canvas id="pieChart5" class="chart-animation"></canvas>
+        </div>
+        <div class="chart-item">
+          <canvas id="pieChart6" class="chart-animation"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrapper">
+      <h1 class="chart-wrapper-header">Annual Fund: Double Bar Chart</h1>
+      <div class="charts-list">
+        <div class="chart-item">
+          <canvas id="doubleBarChart1" class="chart-animation"></canvas>
+        </div>
+        <div class="chart-item">
+          <canvas id="doubleBarChart2" class="chart-animation"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrapper">
+      <h1 class="chart-wrapper-header">General: Polar Area Chart</h1>
+      <div class="charts-list">
+        <div class="chart-item">
+          <canvas id="polarAreaChart" class="chart-animation"></canvas>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
