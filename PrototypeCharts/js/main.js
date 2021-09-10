@@ -1,3 +1,4 @@
+//******************************** DONT USE THIS JS FILE *************************************
 // Global Style
 const primaryColor = ['rgba(0,45,114,1)'];
 const secondaryColor = ['rgba(187,188,188,1)'];
