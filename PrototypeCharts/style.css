@@ -222,13 +222,6 @@ body {
   perspective: 1000px;
 }
 
-.chart-slidein {
-  animation: slidein 3s cubic-bezier(0.36, 0.07, 0.19, 0.67) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
 .chart-bounce {
   animation: bounce 5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
@@ -237,7 +230,7 @@ body {
 }
 
 .chart-grow {
-  animation: grow 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: grow 1s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;

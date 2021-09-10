@@ -141,9 +141,20 @@ function doubleBarChart1() {
                     },
                 },
             },
+            animation: {
+                duration: 2000,
+            },
         },
     };
     let chart = new Chart(ctx, config);
+    (function () {
+        document
+            .querySelector('#bar-animate1')
+            .addEventListener('click', function destoryChart() {
+                chart.destroy();
+                chart = new Chart(ctx, config);
+            });
+    })();
 }
 
 function doubleBarChart2() {
@@ -254,8 +265,19 @@ function doubleBarChart2() {
                     },
                 },
             },
+            animation: {
+                duration: 2000,
+            },
         },
     };
     let chart = new Chart(ctx, config);
+    (function () {
+        document
+            .querySelector('#bar-animate2')
+            .addEventListener('click', function destoryChart() {
+                chart.destroy();
+                chart = new Chart(ctx, config);
+            });
+    })();
 }
 

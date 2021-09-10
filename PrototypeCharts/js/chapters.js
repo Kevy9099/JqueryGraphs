@@ -93,7 +93,21 @@ function polarAreaChart() {
                     yAlign: "bottom",
                 },
             },
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 3000,
+                easing: 'easeInElastic',
+            },
         },
     };
     let chart = new Chart(ctx, config);
+    (function () {
+        document
+            .querySelector('#polar-animate')
+            .addEventListener('click', function destoryChart() {
+                chart.destroy();
+                chart = new Chart(ctx, config);
+            });
+    })();
 }

@@ -22,8 +22,26 @@ $(document).ready(function () {
         entries.forEach((entry) => {
             if (entry.isIntersecting === true) {
                 $('#doubleLineChart').parent().addClass('chart-shake');
+                $('#pieChart1').parent().addClass('chart-shake');
+                $('#pieChart2').parent().addClass('chart-shake');
+                $('#pieChart3').parent().addClass('chart-shake');
+                $('#pieChart4').parent().addClass('chart-shake');
+                $('#pieChart5').parent().addClass('chart-shake');
+                $('#pieChart6').parent().addClass('chart-shake');
+                $('#doubleBarChart1').parent().addClass('chart-bounce');
+                $('#doubleBarChart2').parent().addClass('chart-grow');
+                $('#polarAreaChart').parent().addClass('chart-grow');
             } else {
                 $('#doubleLineChart').parent().removeClass('chart-shake');
+                $('#pieChart1').parent().removeClass('chart-shake');
+                $('#pieChart2').parent().removeClass('chart-shake');
+                $('#pieChart3').parent().removeClass('chart-shake');
+                $('#pieChart4').parent().removeClass('chart-shake');
+                $('#pieChart5').parent().removeClass('chart-shake');
+                $('#pieChart6').parent().removeClass('chart-shake');
+                $('#doubleBarChart1').parent().removeClass('chart-bounce');
+                $('#doubleBarChart2').parent().removeClass('chart-grow');
+                $('#polarAreaChart').parent().removeClass('chart-grow');
             }
         });
     }

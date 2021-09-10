@@ -1205,9 +1205,7 @@ function polarAreaChart() {
         },
       },
       animation: {
-        animateRotate: true,
-        animateScale: true,
-        duration: 3000,
+        duration: 1000,
         easing: 'easeInElastic',
       },
     },
