@@ -102,12 +102,12 @@ function polarAreaChart() {
         },
     };
     let chart = new Chart(ctx, config);
-    (function () {
-        document
-            .querySelector('#polar-animate')
-            .addEventListener('click', function destoryChart() {
-                chart.destroy();
-                chart = new Chart(ctx, config);
-            });
-    })();
+    // (function () {
+    //     document
+    //         .querySelector('#polar-animate')
+    //         .addEventListener('click', function destoryChart() {
+    //             chart.destroy();
+    //             chart = new Chart(ctx, config);
+    //         });
+    // })();
 }

@@ -61,7 +61,8 @@ let primaryColor = ["rgba(0,45,114,1)"]; // Blue
 let secondaryColor = ["rgba(250,194,31,1)"]; // Yellow
 let primaryHexColor = ["#002D72"]; // Blue
 let secondaryHexColor = ["#FAC21F"]; // Yellow
-let neutralColor = ["#FFFFFF"] // White
+let labelColor = ["#d9d9d9"];
+let neutralColor = ["#c7c7c7"] // White
 
 // Other Colors 
 let primaryBorderColor = ["#FFFFFF"];
@@ -138,7 +139,15 @@ function handleLeave(evt, item, legend) {
 }
 //////////////////////* Double Line Chart *////////////////////////////
 function doubleLineChart() {
-    let ctx = $('#doubleLineChart');
+    let ctx = $('#doubleLineChart')[0].getContext('2d');
+    const blueBlackGradient = ctx.createLinearGradient(0, 0, 0, 600);
+    blueBlackGradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+    blueBlackGradient.addColorStop(0, primaryColor);
+
+    const yellowBlackGradient = ctx.createLinearGradient(0, 0, 0, 600);
+    yellowBlackGradient.addColorStop(.9, 'rgba(0, 0, 0, 0.1)');
+    yellowBlackGradient.addColorStop(0, secondaryColor);
+
     let label = yearsNames;
     let data1 = fundsServed;
     let data2 = fundsRaised;
@@ -149,19 +158,23 @@ function doubleLineChart() {
                 label: "Students Served",
                 data: data1,
                 borderColor: primaryColor,
-                pointBackgroundColor: primaryColor,
-                pointRadius: 6,
+                pointBackgroundColor: "white",
+                pointRadius: 3,
                 pointHoverRadius: 15,
                 yAxisID: "y",
+                backgroundColor: blueBlackGradient,
+                fill: true
             },
             {
                 label: "Funds Raised",
                 data: data2,
                 borderColor: secondaryColor,
-                pointBackgroundColor: secondaryColor,
-                pointRadius: 6,
+                pointBackgroundColor: "white",
+                pointRadius: 3,
                 pointHoverRadius: 15,
                 yAxisID: "y1",
+                backgroundColor: yellowBlackGradient,
+                fill: true
             },
         ],
     };
@@ -209,7 +222,7 @@ function doubleLineChart() {
                     title: {
                         display: true,
                         text: "Students Served",
-                        color: neutralColor,
+                        color: labelColor,
                         font: {
                             family: primaryFont,
                             weight: 'bold',
@@ -239,7 +252,7 @@ function doubleLineChart() {
                     title: {
                         display: true,
                         text: "Funds Raised",
-                        color: neutralColor,
+                        color: labelColor,
                         font: {
                             family: primaryFont,
                             weight: 'bold',
@@ -263,7 +276,7 @@ function doubleLineChart() {
                     title: {
                         display: true,
                         text: "Year",
-                        color: neutralColor,
+                        color: labelColor,
                         font: {
                             family: primaryFont,
                             weight: 'bold',
