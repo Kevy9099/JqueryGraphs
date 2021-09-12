@@ -1,0 +1,234 @@
+<html>
+<style>
+    .chart-wrapper {
+        width: calc(100% - 20px);
+        height: 100%;
+        padding: 20px;
+        line-height: 400px;
+        font-family: Lato, Helvetica-Neue, monospace;
+    }
+
+    .chart-wrapper .chart-wrapper-header {
+        color: var(--chart-header-text);
+    }
+
+    .charts-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .chart-item {
+        width: calc(80% + 40px);
+        height: calc(600px + 40px);
+        margin: 0 0 20px 20px;
+        padding: 20px;
+        background-color: rgba(256, 256, 256, 0.1);
+        border: solid 1px white;
+        border-radius: 2%;
+        box-shadow: -1px -1px 2px rgba(73, 73, 73, 0.2) inset;
+    }
+</style>
+
+</html>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"></script>
+    <div class="chart-wrapper">
+        <div class="charts-list">
+            <div class="chart-item">
+                <canvas id="doubleBarChart2"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        let chartPrimaryColor = ["rgba(0,45,114,1)"]; // Blue
+        let chartSecondaryColor = ["rgba(250,194,31,1)"]; // Yellow
+        let chartPrimaryHexColor = ["#002D72"]; // Blue
+        let chartSecondaryHexColor = ["#FAC21F"]; // Yellow
+        let chartLabelColorLight = ["#d9d9d9"]; // Grey
+        let chartNeutralColorLight = ["#c7c7c7"]; // White
+        let chartLabelColorDark = ["#454545"];
+        let chartNeutralColorDark = ["#6b6b6b"];
+        let chartPrimaryPieColors = ["rgba(124,193,196,0.4)", "rgba(173,127,201,0.4)", "rgba(196,124,124,0.4)", "rgba(201,198,129,0.4)", "rgba(127,141,201,0.4)", "rgba(184,119,191,0.4)", "rgba(106,168,110,0.4)", "rgba(201,155,127,0.4)"];
+        let chartPrimaryPieBorderColors = ["rgba(124,193,196,1)", "rgba(173,127,201,1)", "rgba(196,124,124,1)", "rgba(201,198,129,1)", "rgba(127,141,201,1)", "rgba(184,119,191,1)", "rgba(106,168,110,1)", "rgba(201,155,127,1)"];
+
+        // Fonts
+        let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
+
+        //////////////////////* Bar Charts Lables *////////////////////////////
+        let chartAnnualYears = ["FY21", "FY20"];
+
+        let chartRoleDonors = [
+            "Parent",
+            "Trustee",
+            "Faculty/Staff",
+        ]
+
+        let chartRoleFY21 = [100, 92, 97];
+
+        let chartRoleFY20 = [95, 91, 98];
+
+        /////////////////////* Global Tools *///////////////////////////////
+        // Custom Tooltip Position
+        let tooltipPlugin = Chart.registry.getPlugin('tooltip');
+        tooltipPlugin.positioners.myCustomPositioner = function (
+            elements,
+            eventPosition
+        ) {
+            let tooltip = this;
+            return {
+                x: eventPosition.x,
+                y: eventPosition.y - 15,
+            };
+        };
+
+        // Handle Hover & Leave Hover 
+        function chartHandleHover(evt, item, legend) {
+            document.getElementById('pieChart1').style.cursor = 'pointer';
+            document.getElementById('polarAreaChart').style.cursor = 'pointer';
+            legend.chart.data.datasets[0].backgroundColor.forEach(
+                (color, index, colors) => {
+                    colors[index] =
+                        index === item.index || color.length === 9 ? color : color + '4D';
+                }
+            );
+            legend.chart.update();
+        }
+
+        function chartHandleLeave(evt, item, legend) {
+            document.getElementById('pieChart1').style.cursor = 'default';
+            document.getElementById('polarAreaChart').style.cursor = 'default';
+            legend.chart.data.datasets[0].backgroundColor.forEach(
+                (color, index, colors) => {
+                    colors[index] = color.length === 9 ? color.slice(0, -2) : color;
+                }
+            );
+            legend.chart.update();
+        }
+
+        //////////////////////* Double Bar Charts *////////////////////////////
+        function doubleBarChart2() {
+            let ctx = $('#doubleBarChart2');
+            let label = chartRoleDonors;
+            let data1 = chartRoleFY21;
+            let data2 = chartRoleFY20;
+            let data = {
+                labels: label,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'FY21',
+                        data: data1,
+                        backgroundColor: chartPrimaryColor,
+                        borderRadius: 5,
+                        borderWidth: 2,
+                    },
+                    {
+                        type: 'bar',
+                        label: 'FY20',
+                        data: data2,
+                        backgroundColor: chartSecondaryColor,
+                        borderRadius: 5,
+                        borderWidth: 2,
+                    },
+                ],
+            };
+            let config = {
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            displayColors: false,
+                            titleFont: {
+                                family: chartPrimaryFont,
+                                weight: "bold",
+                                size: 20,
+                            },
+                            bodyFont: {
+                                family: chartPrimaryFont,
+                                size: 18,
+                            },
+                            yAlign: 'bottom',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                color: chartLabelColorDark,
+                                callback: function (value) {
+                                    return (value / 100) * 100 + "%";
+                                },
+                                font: {
+                                    family: chartPrimaryFont,
+                                    weight: "bold",
+                                    size: 16,
+                                },
+                            },
+                            title: {
+                                display: true,
+                                text: "Role Participation Percentage",
+                                color: chartNeutralColorDark,
+                                font: {
+                                    family: chartPrimaryFont,
+                                    weight: "bold",
+                                    size: 18,
+                                }
+                            },
+                            grid: {
+                                color: chartNeutralColorDark,
+                            }
+                        },
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: chartLabelColorDark,
+                                font: {
+                                    family: chartPrimaryFont,
+                                    weight: "bold",
+                                    size: 14,
+                                },
+                                maxRotation: 90,
+                                minRotation: 90,
+                            },
+                            title: {
+                                display: true,
+                                text: "Donor Type",
+                                color: chartNeutralColorDark,
+                                font: {
+                                    family: chartPrimaryFont,
+                                    weight: "bold",
+                                    size: 20,
+                                },
+                            },
+                            grid: {
+                                color: chartNeutralColorDark,
+                            },
+                        },
+                    },
+                    animation: {
+                        duration: 2000,
+                    },
+                },
+            };
+            let chart = new Chart(ctx, config);
+        }
+
+        $('document').ready(() => {
+            doubleBarChart2();
+        });
+    </script>
+</body>
