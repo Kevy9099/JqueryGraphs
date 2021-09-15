@@ -41,7 +41,7 @@
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
-        <canvas id="doubleBarChart1"></canvas>
+        <canvas id="polarAreaChart"></canvas>
       </div>
     </div>
   </div>
@@ -78,59 +78,72 @@
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
-    //////////////////////* Bar Charts Lables *////////////////////////////
-    let chartAnnualYears = ["FY21", "FY20"];
-
-    let chartGivenDonors = [
-      "Parent",
-      "Trustee",
-      "Grandparents",
-      "Faculty/Staff",
-      "Friends/Former Trustees",
-      "Alumni",
+    //////////////////////* Polar Area Chart Lables *////////////////////////////
+    let monthNames = [
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
     ];
 
-    // Giving Percentage & Role Participation Percentage for 2021
-    let chartGivingFY21 = [80.0, 9.0, 6.0, 2.0, 2.0, 1.0];
+    let monthlyFunds = [
+      50.0, 98966.0, 222302.0, 814409.52, 123268.03, 240959.5, 107754.29,
+      65195.0, 260791.76, 189788.0, 210500.0, 20625.97,
+    ];
 
-    // Giving Percentage & Role Participation % for 2020
-    let chartGivingFY20 = [81.0, 8.0, 8.0, 2.0, 0.5, 0.5];
-
-    //////////////////////* Double Bar Charts *////////////////////////////
-    function doubleBarChart1() {
-      let ctx = $("#doubleBarChart1");
-      let label = chartGivenDonors;
-      let data1 = chartGivingFY21;
-      let data2 = chartGivingFY20;
+    function polarAreaChart() {
+      let ctx = $("#polarAreaChart")[0].getContext("2d");
+      let label = monthNames;
+      let data1 = monthlyFunds;
       let data = {
         labels: label,
         datasets: [
           {
-            type: "bar",
-            label: "FY21",
+            label: "",
             data: data1,
-            backgroundColor: chartPrimaryColor,
-            borderRadius: 5,
-            borderWidth: 2,
-          },
-          {
-            type: "bar",
-            label: "FY20",
-            data: data2,
-            backgroundColor: chartSecondaryColor,
-            borderRadius: 5,
-            borderWidth: 2,
+            backgroundColor: chartPrimaryPieColors,
+            borderColor: "white",
+            hoverBackgroundColor: chartPrimaryPieColors,
+            borderRadius: 4,
+            hoverOffset: 30,
+            tickWidth: 20,
           },
         ],
       };
       let config = {
+        type: "polarArea",
         data: data,
         options: {
-          responsive: true,
           maintainAspectRatio: false,
+          responsive: true,
+          scale: {
+            max: 800000,
+            min: 0,
+          },
+          gridLines: {
+            display: false,
+          },
           plugins: {
             legend: {
-              display: false,
+              display: true,
+              position: "bottom",
+              labels: {
+                usePointStyle: true,
+                color: chartLabelColorDark,
+                font: {
+                  family: chartPrimaryFont,
+                  weight: "bold",
+                  size: 20,
+                },
+              },
             },
             tooltip: {
               displayColors: false,
@@ -146,73 +159,15 @@
               yAlign: "bottom",
             },
           },
-          scales: {
-            y: {
-              beginAtZero: true,
-              min: 0,
-              max: 90,
-              ticks: {
-                color: chartLabelColorDark,
-                callback: function (value) {
-                  return (value / 100) * 100 + "%";
-                },
-                font: {
-                  family: chartPrimaryFont,
-                  weight: "bold",
-                  size: 16,
-                },
-              },
-              title: {
-                display: true,
-                text: "Given Percentage",
-                color: chartNeutralColorDark,
-                font: {
-                  family: chartPrimaryFont,
-                  weight: "bold",
-                  size: 18,
-                },
-              },
-              grid: {
-                color: chartNeutralColorDark,
-              },
-            },
-            x: {
-              beginAtZero: true,
-              ticks: {
-                color: chartLabelColorDark,
-                font: {
-                  family: chartPrimaryFont,
-                  weight: "bold",
-                  size: 14,
-                },
-                maxRotation: 90,
-                minRotation: 90,
-              },
-              title: {
-                display: true,
-                text: "Donor Type",
-                color: chartNeutralColorDark,
-                font: {
-                  family: chartPrimaryFont,
-                  weight: "bold",
-                  size: 20,
-                },
-              },
-              grid: {
-                color: chartNeutralColorDark,
-              },
-            },
-          },
           animation: {
-            duration: 2000,
+            duration: 3000,
           },
         },
       };
       let chart = new Chart(ctx, config);
     }
-
     $("document").ready(() => {
-      doubleBarChart1();
+      polarAreaChart();
     });
   </script>
 </body>
