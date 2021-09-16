@@ -30,6 +30,13 @@
       border-radius: 2%;
       box-shadow: -1px -1px 2px rgba(73, 73, 73, 0.2) inset;
     }
+
+    .chart-shake {
+      animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
   </style>
 </html>
 
@@ -99,6 +106,33 @@
       65195.0, 260791.76, 189788.0, 210500.0, 20625.97,
     ];
 
+    //////////////////////////////* Animation *//////////////////////
+    // IntersectionObserver
+    let options = {
+      root: null,
+      rootMargin: "0px 0px 0px 0px",
+      threshold: 1.0,
+    };
+
+    let observer = new IntersectionObserver(callback, options);
+
+    function callback(entries, observer) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting === true) {
+          $("#polarAreaChart").parent().addClass("chart-shake");
+        } else {
+          $("#polarAreaChart").parent().removeClass("chart-shake");
+        }
+      });
+    }
+
+    let target = document.querySelectorAll(".chart-animation");
+    target.forEach((item) => {
+      if (item) {
+        observer.observe(item);
+      }
+    });
+
     function polarAreaChart() {
       let ctx = $("#polarAreaChart")[0].getContext("2d");
       let label = monthNames;
@@ -134,14 +168,14 @@
           plugins: {
             legend: {
               display: true,
-              position: "bottom",
+              position: "right",
               labels: {
                 usePointStyle: true,
                 color: chartLabelColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
-                  size: 20,
+                  size: 30,
                 },
               },
             },
