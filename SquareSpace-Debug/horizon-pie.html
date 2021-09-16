@@ -48,20 +48,13 @@
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
-        <canvas id="pieChart1"></canvas>
+        <canvas id="pieChart1" class="chart-animation"></canvas>
       </div>
     </div>
   </div>
   <script>
-    let chartPrimaryColor = ["rgba(0,45,114,1)"]; // Blue
-    let chartSecondaryColor = ["rgba(250,194,31,1)"]; // Yellow
-    let chartPrimaryHexColor = ["#002D72"]; // Blue
-    let chartSecondaryHexColor = ["#FAC21F"]; // Yellow
-    let chartLabelColorLight = ["#d9d9d9"]; // Grey
-    let chartNeutralColorLight = ["#c7c7c7"]; // White
     let chartLabelColorDark = ["#454545"];
-    let chartNeutralColorDark = ["#6b6b6b"];
-    let chartPrimaryPieColors = [
+    let chartPrimaryPieColor = [
       "rgba(124,193,196,0.4)",
       "rgba(173,127,201,0.4)",
       "rgba(196,124,124,0.4)",
@@ -71,16 +64,17 @@
       "rgba(106,168,110,0.4)",
       "rgba(201,155,127,0.4)",
     ];
-    let chartPrimaryPieBorderColors = [
-      "rgba(124,193,196,1)",
-      "rgba(173,127,201,1)",
-      "rgba(196,124,124,1)",
-      "rgba(201,198,129,1)",
-      "rgba(127,141,201,1)",
-      "rgba(184,119,191,1)",
-      "rgba(106,168,110,1)",
-      "rgba(201,155,127,1)",
-    ];
+    let chartPrimaryPieBorderColor = 'white';
+    // let chartPrimaryPieBorderColor = [
+    //   "rgba(124,193,196,1)",
+    //   "rgba(173,127,201,1)",
+    //   "rgba(196,124,124,1)",
+    //   "rgba(201,198,129,1)",
+    //   "rgba(127,141,201,1)",
+    //   "rgba(184,119,191,1)",
+    //   "rgba(106,168,110,1)",
+    //   "rgba(201,155,127,1)",
+    // ];
 
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
@@ -123,34 +117,7 @@
       legend.chart.update();
     }
 
-    //////////////////////////////* Animation *//////////////////////
-    // IntersectionObserver
-    let options = {
-      root: null,
-      rootMargin: "0px 0px 0px 0px",
-      threshold: 1.0,
-    };
-
-    let observer = new IntersectionObserver(callback, options);
-
-    function callback(entries, observer) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting === true) {
-          $("#pieChart1").parent().addClass("chart-shake");
-        } else {
-          $("#pieChart1").parent().removeClass("chart-shake");
-        }
-      });
-    }
-
-    let target = document.querySelectorAll(".chart-animation");
-    target.forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
-
-    //////////////////////* Pie Charts *////////////////////////////
+    //////////////////////* Pie Chart 1 *////////////////////////////
     function pieChart1() {
       let ctx = $("#pieChart1")[0].getContext("2d");
       let label = chartDonorTypes;
@@ -161,9 +128,10 @@
           {
             label: "Donor",
             data: data1,
-            backgroundColor: chartPrimaryPieColors,
+            backgroundColor: chartPrimaryPieColor,
             borderColor: "white",
-            hoverBackgroundColor: chartPrimaryPieColors,
+            hoverBackgroundColor: chartPrimaryPieColor,
+            borderColor: chartPrimaryPieBorderColor,
             borderWidth: 2,
             hoverOffset: 30,
           },
@@ -207,10 +175,42 @@
           },
         },
       };
-      let chart = new Chart(ctx, config);
+      
+      let chart;
+  
+      //////////////////////////////* Animation *//////////////////////
+      // IntersectionObserver
+      function callback(entries, observer) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting === true) {
+            $("#pieChart1").parent().addClass("chart-shake");
+            if (chart) {
+              chart.destroy();
+            }
+            chart = new Chart(ctx, config);;
+          } else {
+            $("#pieChart1").parent().removeClass("chart-shake");
+          }
+        });
+      }
+  
+      const options = {
+        root: null,
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 1.0,
+      };
+  
+      const observer = new IntersectionObserver(callback, options);
+  
+      const target = document.querySelectorAll("#pieChart1");
+      target.forEach((item) => {
+        if (item) {
+          observer.observe(item);
+        }
+      });
     }
 
-    $("document").ready(() => {
+    $(document).ready(() => {
       pieChart1();
     });
   </script>
