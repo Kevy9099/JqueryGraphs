@@ -48,7 +48,7 @@
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
-        <canvas id="doubleBarChart2"></canvas>
+        <canvas id="doubleBarChart2" class="chart-animation"></canvas>
       </div>
     </div>
   </div>
@@ -94,34 +94,7 @@
 
     let chartRoleFY20 = [95, 91, 98];
 
-    //////////////////////////////* Animation *//////////////////////
-    // IntersectionObserver
-    let options = {
-      root: null,
-      rootMargin: "0px 0px 0px 0px",
-      threshold: 1.0,
-    };
-
-    let observer = new IntersectionObserver(callback, options);
-
-    function callback(entries, observer) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting === true) {
-          $("#doubleBarChart2").parent().addClass("chart-shake");
-        } else {
-          $("#doubleBarChart2").parent().removeClass("chart-shake");
-        }
-      });
-    }
-
-    let target = document.querySelectorAll(".chart-animation");
-    target.forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
-
-    //////////////////////* Double Bar Charts *////////////////////////////
+    //////////////////////* Double Bar Chart *////////////////////////////
     function doubleBarChart2() {
       let ctx = $("#doubleBarChart2");
       let label = chartRoleDonors;
@@ -233,7 +206,38 @@
           },
         },
       };
-      let chart = new Chart(ctx, config);
+
+      let chart;
+      //////////////////////////////* Animation *//////////////////////
+  // IntersectionObserver
+      function callback(entries, observer) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting === true) {
+            $("#doubleBarChart2").parent().addClass("chart-shake");
+            if (chart) {
+              chart.destroy();
+            }
+            chart = new Chart(ctx, config);
+          } else {
+            $("#doubleBarChart2").parent().removeClass("chart-shake");
+          }
+        });
+      }
+  
+      const options = {
+        root: null,
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 1.0,
+      };
+  
+      const observer = new IntersectionObserver(callback, options);
+  
+      const target = document.querySelectorAll(".chart-animation");
+      target.forEach((item) => {
+        if (item) {
+          observer.observe(item);
+        }
+      });
     }
 
     $("document").ready(() => {

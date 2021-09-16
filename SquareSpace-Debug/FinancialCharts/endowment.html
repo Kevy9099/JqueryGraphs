@@ -53,15 +53,8 @@
     </div>
   </div>
   <script>
-    let chartPrimaryColor = ["rgba(0,45,114,1)"]; // Blue
-    let chartSecondaryColor = ["rgba(250,194,31,1)"]; // Yellow
-    let chartPrimaryHexColor = ["#002D72"]; // Blue
-    let chartSecondaryHexColor = ["#FAC21F"]; // Yellow
-    let chartLabelColorLight = ["#d9d9d9"]; // Grey
-    let chartNeutralColorLight = ["#c7c7c7"]; // White
     let chartLabelColorDark = ["#454545"];
-    let chartNeutralColorDark = ["#6b6b6b"];
-    let chartPrimaryPieColors = [
+    let chartPrimaryPieColor = [
       "#7cc1c4",
       "#ad7fc9",
       "#c47c7c",
@@ -71,7 +64,7 @@
       "#6aa86e",
       "#c99b7f",
     ];
-    let chartPrimaryHoverPieColors = [
+    let chartPrimaryHoverPieColor = [
       "#7cc1c4",
       "#ad7fc9",
       "#c47c7c",
@@ -81,6 +74,19 @@
       "#6aa86e",
       "#c99b7f",
     ];
+
+    let chartPrimaryPieBorderColor = 'white';
+    /* let chartPrimaryPieBorderColor = [
+      "#7cc1c4",
+      "#ad7fc9",
+      "#c47c7c",
+      "#c9c681",
+      "#7f8dc9",
+      "#b877bf ",
+      "#6aa86e",
+      "#c99b7f",
+    ]; */
+
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
@@ -127,33 +133,6 @@
       legend.chart.update();
     }
 
-    //////////////////////////////* Animation *//////////////////////
-    // IntersectionObserver
-    let options = {
-      root: null,
-      rootMargin: "0px 0px 0px 0px",
-      threshold: 1.0,
-    };
-
-    let observer = new IntersectionObserver(callback, options);
-
-    function callback(entries, observer) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting === true) {
-          $("#endowmentPieChart").parent().addClass("chart-shake");
-        } else {
-          $("#endowmentPieChart").parent().removeClass("chart-shake");
-        }
-      });
-    }
-
-    let target = document.querySelectorAll(".chart-animation");
-    target.forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
-
     //////////////////////* Pie Charts *////////////////////////////
     function endowmentPieChart() {
       let ctx = $("#endowmentPieChart")[0].getContext("2d");
@@ -165,9 +144,9 @@
           {
             label: "Donor",
             data: data1,
-            backgroundColor: chartPrimaryPieColors,
-            borderColor: "white",
-            hoverBackgroundColor: chartPrimaryPieColors,
+            backgroundColor: chartPrimaryPieColor,
+            borderColor: chartPrimaryPieBorderColor,
+            hoverBackgroundColor: chartPrimaryPieColor,
             borderWidth: 2,
             hoverOffset: 40,
           },
@@ -211,7 +190,39 @@
           },
         },
       };
-      let chart = new Chart(ctx, config);
+
+      let chart;
+  
+      //////////////////////////////* Animation *//////////////////////
+      // IntersectionObserver
+      function callback(entries, observer) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting === true) {
+            $("#endowmentPieChart").parent().addClass("chart-shake");
+            if (chart) {
+              chart.destroy();
+            }
+            chart = new Chart(ctx, config);
+          } else {
+            $("#endowmentPieChart").parent().removeClass("chart-shake");
+          }
+        });
+      }
+  
+      const options = {
+        root: null,
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 1.0,
+      };
+  
+      const observer = new IntersectionObserver(callback, options);
+  
+      const target = document.querySelectorAll(".chart-animation");
+      target.forEach((item) => {
+        if (item) {
+          observer.observe(item);
+        }
+      });
     }
 
     $("document").ready(() => {

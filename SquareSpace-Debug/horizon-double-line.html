@@ -47,17 +47,15 @@
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
-        <canvas id="doubleLineChart"></canvas>
+        <canvas id="doubleLineChart" class="chart-animation"></canvas>
       </div>
     </div>
   </div>
   <script>
     let chartPrimaryColor = ["rgba(0,45,114,1)"]; // Blue
     let chartSecondaryColor = ["rgba(250,194,31,1)"]; // Yellow
-    let chartPrimaryHexColor = ["#002D72"]; // Blue
-    let chartSecondaryHexColor = ["#FAC21F"]; // Yellow
-    let chartLabelColor = ["#d9d9d9"];
-    let chartNeutralColor = ["#c7c7c7"]; // White
+    let chartLabelColorDark = ["#d9d9d9"];
+    let chartNeutralColorDark = ["#c7c7c7"]; // White
 
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
@@ -85,33 +83,6 @@
         y: eventPosition.y - 15,
       };
     };
-
-    //////////////////////////////* Animation *//////////////////////
-    // IntersectionObserver
-    let options = {
-      root: null,
-      rootMargin: "0px 0px 0px 0px",
-      threshold: 1.0,
-    };
-
-    let observer = new IntersectionObserver(callback, options);
-
-    function callback(entries, observer) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting === true) {
-          $("#doubleLineChart").parent().addClass("chart-shake");
-        } else {
-          $("#doubleLineChart").parent().removeClass("chart-shake");
-        }
-      });
-    }
-
-    let target = document.querySelectorAll(".chart-animation");
-    target.forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
 
     function doubleLineChart() {
       let ctx = $("#doubleLineChart")[0].getContext("2d");
@@ -188,10 +159,10 @@
               position: "left",
               beginAtZero: true,
               grid: {
-                color: chartNeutralColor,
+                color: chartNeutralColorDark,
               },
               ticks: {
-                color: chartNeutralColor,
+                color: chartNeutralColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -201,7 +172,7 @@
               title: {
                 display: true,
                 text: "Students Served",
-                color: chartLabelColor,
+                color: chartLabelColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -221,7 +192,7 @@
                 callback: function (value) {
                   return "$" + value / 1000 + "k";
                 },
-                color: chartNeutralColor,
+                color: chartNeutralColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -231,7 +202,7 @@
               title: {
                 display: true,
                 text: "Funds Raised",
-                color: chartLabelColor,
+                color: chartLabelColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -241,10 +212,10 @@
             },
             x: {
               grid: {
-                color: chartNeutralColor,
+                color: chartNeutralColorDark,
               },
               ticks: {
-                color: chartNeutralColor,
+                color: chartNeutralColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -254,7 +225,7 @@
               title: {
                 display: true,
                 text: "Year",
-                color: chartLabelColor,
+                color: chartLabelColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -265,10 +236,40 @@
           },
         },
       };
-      let chart = new Chart(ctx, config);
+      
+      let chart;
+  
+      function callback(entries, observer) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting === true) {
+            $("#doubleLineChart").parent().addClass("chart-shake");
+            if (chart) {
+              chart.destroy();
+            }
+            chart = new Chart(ctx, config);
+          } else {
+            $("#doubleLineChart").parent().removeClass("chart-shake");
+          }
+        });
+      }
+  
+      const options = {
+        root: null,
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 1.0,
+      };
+  
+      const observer = new IntersectionObserver(callback, options);
+  
+      const target = document.querySelectorAll(".chart-animation");
+      target.forEach((item) => {
+        if (item) {
+          observer.observe(item);
+        }
+      });
     }
 
-    $("document").ready(() => {
+    $(document).ready(() => {
       doubleLineChart();
     });
   </script>
