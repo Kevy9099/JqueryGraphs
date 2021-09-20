@@ -23,8 +23,7 @@
     .chart-item {
       width: calc(80% + 40px);
       height: calc(600px + 40px);
-      margin: 0 0 20px 20px;
-      padding: 20px;
+      margin: 20px;
       background-color: rgba(256, 256, 256, 0.1);
       border: solid 1px white;
       border-radius: 2%;
@@ -88,6 +87,8 @@
     ]; */
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
+
+    let chartAnimationDuration = 2000;
 
     let chartBudgetedExpenses = [
       "Personnal Costs",
@@ -153,10 +154,13 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 30,
+          },
           plugins: {
             legend: {
               display: true,
-              position: "bottom",
+              position: "right",
               onHover: chartHandleHover,
               onLeave: chartHandleLeave,
               labels: {
@@ -183,6 +187,9 @@
               yAlign: "bottom",
             },
           },
+          animation: {
+            duration: chartAnimationDuration,
+          },
         },
       };
 
@@ -194,10 +201,9 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#expensesPieChart").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
             }
-            chart = new Chart(ctx, config);
           } else {
             $("#expensesPieChart").parent().removeClass("chart-shake");
           }

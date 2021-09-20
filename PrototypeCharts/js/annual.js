@@ -69,6 +69,7 @@ function doubleBarChart1() {
             plugins: {
                 legend: {
                     display: false,
+                    
                 },
                 tooltip: {
                     displayColors: false,

@@ -54,7 +54,7 @@
   </div>
   <script>
     let chartLabelColorDark = ["#454545"];
-    let chartPrimaryPieColors = [
+    let chartPrimaryPieColor = [
       "#7cc1c4",
       "#ad7fc9",
       "#c47c7c",
@@ -64,7 +64,7 @@
       "#6aa86e",
       "#c99b7f",
     ];
-    let chartPrimaryHoverPieColors = [
+    let chartPrimaryHoverPieColor = [
       "#7cc1c4",
       "#ad7fc9",
       "#c47c7c",
@@ -89,6 +89,7 @@
 
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
+    let chartAnimationDuration = 2000;
 
     let chartBudgetedRevenues = [
       "Tuition & Fees",
@@ -132,9 +133,9 @@
           {
             label: "Donor",
             data: data1,
-            backgroundColor: chartPrimaryPieColors,
-            borderColor: "white",
-            hoverBackgroundColor: chartPrimaryPieColors,
+            backgroundColor: chartPrimaryPieColor,
+            borderColor: chartPrimaryPieBorderColor,
+            hoverBackgroundColor: chartPrimaryPieColor,
             borderWidth: 2,
             hoverOffset: 40,
           },
@@ -146,10 +147,13 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 30,
+          },
           plugins: {
             legend: {
               display: true,
-              position: "bottom",
+              position: "right",
               onHover: chartHandleHover,
               onLeave: chartHandleLeave,
               labels: {
@@ -176,6 +180,9 @@
               yAlign: "bottom",
             },
           },
+          animation: {
+            duration: chartAnimationDuration,
+          },
         },
       };
 
@@ -187,10 +194,9 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#revenuesPieChart").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
             }
-            chart = new Chart(ctx, config);
           } else {
             $("#revenuesPieChart").parent().removeClass("chart-shake");
           }

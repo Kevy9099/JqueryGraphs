@@ -23,8 +23,7 @@
     .chart-item {
       width: calc(80% + 40px);
       height: calc(600px + 40px);
-      margin: 0 0 20px 20px;
-      padding: 20px;
+      margin: 20px;
       background-color: rgba(256, 256, 256, 0.1);
       border: solid 1px white;
       border-radius: 2%;
@@ -60,6 +59,8 @@
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
+    let chartAnimationDuration = 3000;
+
     //////////////////////* Line & Pie Chart Lables *////////////////////////////
     // Line Chart Y-Axis
     let chartYearNames = ["FY21", "FY20", "FY19", "FY18", "FY17", "FY16"];
@@ -86,14 +87,6 @@
 
     function doubleLineChart() {
       let ctx = $("#doubleLineChart")[0].getContext("2d");
-      const blueBlackGradient = ctx.createLinearGradient(0, 0, 0, 600);
-      blueBlackGradient.addColorStop(1, "rgba(0, 0, 0, 0.1)");
-      blueBlackGradient.addColorStop(0, chartPrimaryColor);
-
-      const yellowBlackGradient = ctx.createLinearGradient(0, 0, 0, 600);
-      yellowBlackGradient.addColorStop(0.9, "rgba(0, 0, 0, 0.1)");
-      yellowBlackGradient.addColorStop(0, chartSecondaryColor);
-
       let label = chartYearNames;
       let data1 = chartFundsServed;
       let data2 = chartFundsRaised;
@@ -108,10 +101,7 @@
             pointRadius: 4,
             pointHoverRadius: 15,
             yAxisID: "y",
-            backgroundColor: blueBlackGradient,
-            hoverBackgroundColor: yellowBlackGradient,
             hoverBorderColor: chartPrimaryColor,
-            fill: true,
           },
           {
             label: "Funds Raised",
@@ -121,10 +111,7 @@
             pointRadius: 4,
             pointHoverRadius: 15,
             yAxisID: "y1",
-            backgroundColor: yellowBlackGradient,
-            hoverBackgroundColor: chartSecondaryColor,
             hoverBorderColor: chartSecondaryColor,
-            fill: true,
           },
         ],
       };
@@ -134,9 +121,13 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 30,
+          },
           plugins: {
             legend: {
-              display: false,
+              display: true,
+              position: "right",
             },
             tooltip: {
               displayColors: false,
@@ -234,6 +225,9 @@
               },
             },
           },
+          animation: {
+            duration: chartAnimationDuration,
+          },
         },
       };
       
@@ -243,10 +237,9 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#doubleLineChart").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
             }
-            chart = new Chart(ctx, config);
           } else {
             $("#doubleLineChart").parent().removeClass("chart-shake");
           }

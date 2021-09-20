@@ -90,6 +90,8 @@
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
+    let chartAnimationDuration = 2000;
+
     let chartEndowmentList = [
       "The General Endowment",
       "The President's Endowment",
@@ -158,10 +160,13 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 30,
+          },
           plugins: {
             legend: {
               display: true,
-              position: "bottom",
+              position: "right",
               onHover: chartHandleHover,
               onLeave: chartHandleLeave,
               labels: {
@@ -188,6 +193,9 @@
               yAlign: "bottom",
             },
           },
+          animation: {
+            duration: chartAnimationDuration,
+          },
         },
       };
 
@@ -199,10 +207,9 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#endowmentPieChart").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
             }
-            chart = new Chart(ctx, config);
           } else {
             $("#endowmentPieChart").parent().removeClass("chart-shake");
           }

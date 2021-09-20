@@ -80,6 +80,8 @@
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
+    let chartAnimationDuration = 2000;
+
     //////////////////////* Polar Area Chart Lables *////////////////////////////
     let monthNames = [
       "July",
@@ -138,13 +140,16 @@
             legend: {
               display: true,
               position: "right",
+              layout: {
+                padding: 30,
+              },
               labels: {
                 usePointStyle: true,
                 color: chartLabelColorDark,
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
-                  size: 18,
+                  size: 14,
                 },
               },
             },
@@ -163,7 +168,7 @@
             },
           },
           animation: {
-            duration: 3000,
+            duration: chartAnimationDuration,
           },
         },
       };
@@ -175,10 +180,9 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#polarAreaChart").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
             }
-            chart = new Chart(ctx, config);
           } else {
             $("#polarAreaChart").parent().removeClass("chart-shake");
           }
