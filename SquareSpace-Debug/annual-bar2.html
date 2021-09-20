@@ -23,8 +23,7 @@
     .chart-item {
       width: calc(80% + 40px);
       height: calc(600px + 40px);
-      margin: 0 0 20px 20px;
-      padding: 20px;
+      margin: 20px;
       background-color: rgba(256, 256, 256, 0.1);
       border: solid 1px white;
       border-radius: 2%;
@@ -126,9 +125,13 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 20,
+          },
           plugins: {
             legend: {
-              display: false,
+              display: true,
+              position: "right",
             },
             tooltip: {
               displayColors: false,
@@ -214,10 +217,9 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#doubleBarChart2").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
             }
-            chart = new Chart(ctx, config);
           } else {
             $("#doubleBarChart2").parent().removeClass("chart-shake");
           }
