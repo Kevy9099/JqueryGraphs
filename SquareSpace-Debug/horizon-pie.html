@@ -14,8 +14,8 @@
 
     .charts-list {
       display: flex;
-      flex-wrap: wrap;
-      align-content: center;
+      flex-direction: column;
+      align-items: center;
       width: 100%;
       margin-bottom: 20px;
     }
@@ -23,8 +23,7 @@
     .chart-item {
       width: calc(80% + 40px);
       height: calc(600px + 40px);
-      margin: 0 0 20px 20px;
-      padding: 20px;
+      margin: 20px;
       background-color: rgba(256, 256, 256, 0.1);
       border: solid 1px white;
       border-radius: 2%;
@@ -37,6 +36,53 @@
       backface-visibility: hidden;
       perspective: 1000px;
     }
+
+    #year-menu {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 20px;
+      width: 100%;
+    }
+
+    .year-menu-button {
+      overflow: hidden;
+      margin: 10px !important;
+      padding: 12px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 150ms linear;
+      text-align: center;
+      white-space: nowrap;
+      text-decoration: none !important;
+      text-transform: none;
+      text-transform: capitalize;
+      color: #fff;
+      border: 0 none;
+      border-radius: 36px;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 160px;
+      box-shadow: 2px 5px 10px #e4e4e4;
+      background-color: #7999a9;
+    }
+
+    .year-menu-button:hover {
+      transition: all 150ms linear;
+      opacity: .85;
+    }
+    
+    .year-menu-button.is-active {
+      transition: all 150ms linear;
+      opacity: .70;
+    }
+
   </style>
 </html>
 
@@ -50,6 +96,7 @@
       <div class="chart-item">
         <canvas id="pieChart1" class="chart-animation"></canvas>
       </div>
+      <div id="year-menu"></div>
     </div>
   </div>
   <script>
@@ -79,6 +126,35 @@
     // Fonts
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
+    let chartAnimationDuration = 3000;
+
+    let chartData = [
+      { 
+        year: "FY16",
+        donors: [31.0, 24.0, 7.0, 24.0, 10.0, 0.0, 2.0, 2.0]
+      },
+      { 
+        year: "FY17",
+        donors: [20.0, 42.0, 22.0, 5.0, 7.0, 0.0, 1.0, 3.]
+      },
+      { 
+        year: "FY18",
+        donors: [26.0, 11.0, 40.0, 8.0, 5.0, 5.0, 2.0, 3.0]
+      },
+      { 
+        year: "FY19",
+        donors: [29.0, 8.0, 41.0, 5.0, 7.0, 8.0, 0.0, 2.0]
+      },
+      { 
+        year: "FY20",
+        donors: [25.0, 5.0, 41.0, 12.0, 8.0, 4.0, 0.0, 5.0]
+      },
+      { 
+        year: "FY21",
+        donors: [6.0, 6.0, 69.0, 10.0, 3.0, 0.0, 4.0, 2.0]
+      },
+    ];
+
     let chartDonorTypes = [
       "Trustee",
       "Friend",
@@ -90,13 +166,10 @@
       "Misc.",
     ];
 
-    let chartDonorsFY21 = [6.0, 6.0, 69.0, 10.0, 3.0, 0.0, 4.0, 2.0];
-
     /////////////////////* Global Tools *///////////////////////////////
     // Handle Hover & Leave Hover
     function chartHandleHover(evt, item, legend) {
       document.getElementById("pieChart1").style.cursor = "pointer";
-      document.getElementById("polarAreaChart").style.cursor = "pointer";
       legend.chart.data.datasets[0].backgroundColor.forEach(
         (color, index, colors) => {
           colors[index] =
@@ -108,7 +181,6 @@
 
     function chartHandleLeave(evt, item, legend) {
       document.getElementById("pieChart1").style.cursor = "default";
-      document.getElementById("polarAreaChart").style.cursor = "default";
       legend.chart.data.datasets[0].backgroundColor.forEach(
         (color, index, colors) => {
           colors[index] = color.length === 9 ? color.slice(0, -2) : color;
@@ -118,10 +190,10 @@
     }
 
     //////////////////////* Pie Chart 1 *////////////////////////////
-    function pieChart1() {
+    function pieChart1(selectedData) {
       let ctx = $("#pieChart1")[0].getContext("2d");
       let label = chartDonorTypes;
-      let data1 = chartDonorsFY21;
+      let data1 = selectedData ? selectedData : chartData[0].donors;
       let data = {
         labels: label,
         datasets: [
@@ -143,10 +215,13 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: 30,
+          },
           plugins: {
             legend: {
               display: true,
-              position: "bottom",
+              position: "right",
               onHover: chartHandleHover,
               onLeave: chartHandleLeave,
               labels: {
@@ -161,6 +236,13 @@
             },
             tooltip: {
               displayColors: false,
+              callbacks: {
+                  label: function(context) {
+                    let label = context.label || '';
+                    let value = context.formattedValue || '';
+                    return label + ' ' + value + '%';
+                  }
+              },
               titleFont: {
                 family: chartPrimaryFont,
                 weight: "bold",
@@ -174,12 +256,36 @@
             },
           },
           animation: {
-            duration: 2000,
+            duration: chartAnimationDuration,
           },
         },
       };
       
       let chart;
+
+      /* Build year selection menu */
+      function buildYearSelectionMenu() {
+        const menu = $('#year-menu');
+        chartData.forEach((data) => {
+          const menuItem = $('<button type="button">' + data.year + '</button>');
+          menuItem.click(function() {
+            if (chart) {
+              chart.data.datasets[0].data = data.donors;
+              chart.update();
+            }
+
+            $('.year-menu-button.is-active').removeClass('is-active')
+            $(this).addClass('is-active');
+          });
+          
+          if (data.year === 'FY16') {
+            menuItem.addClass('is-active');
+          }
+
+          menuItem.addClass('year-menu-button');
+          menu.append(menuItem);
+        });
+      }
   
       //////////////////////////////* Animation *//////////////////////
       // IntersectionObserver
@@ -187,10 +293,10 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
             $("#pieChart1").parent().addClass("chart-shake");
-            if (chart) {
-              chart.destroy();
+            if (!chart) {
+              chart = new Chart(ctx, config);
+              buildYearSelectionMenu();
             }
-            chart = new Chart(ctx, config);;
           } else {
             $("#pieChart1").parent().removeClass("chart-shake");
           }
