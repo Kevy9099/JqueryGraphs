@@ -129,12 +129,15 @@
         options: {
           maintainAspectRatio: false,
           responsive: true,
-          scale: {
-            max: 800000,
-            min: 0,
-          },
-          gridLines: {
-            display: false,
+          scales: {
+            r: {
+              ticks: {
+                // Include a dollar sign in the ticks
+                callback: function(value, index, values) {
+                  return '$' + value.toLocaleString('en-US', {maximumFractionDigits:2})
+                }
+              },
+            },
           },
           plugins: {
             legend: {
@@ -154,6 +157,13 @@
               },
             },
             tooltip: {
+              callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    let value = context.formattedValue || '';
+                    return label + ' $' + value;
+                  }
+              },
               displayColors: false,
               titleFont: {
                 family: chartPrimaryFont,

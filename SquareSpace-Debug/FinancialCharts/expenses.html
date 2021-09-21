@@ -169,12 +169,19 @@
                 font: {
                   family: chartPrimaryFont,
                   weight: "bold",
-                  size: 16,
+                  size: 14,
                 },
               },
             },
             tooltip: {
               displayColors: false,
+              callbacks: {
+                  label: function(context) {
+                    let label = context.label || '';
+                    let value = context.formattedValue || '';
+                    return label + ' $' + value;
+                  }
+              },
               titleFont: {
                 family: chartPrimaryFont,
                 weight: "bold",

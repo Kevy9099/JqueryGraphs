@@ -134,6 +134,13 @@
               position: "right",
             },
             tooltip: {
+              callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    let value = context.formattedValue || '';
+                    return label + ' ' + value + '%';
+                  }
+              },
               displayColors: false,
               titleFont: {
                 family: chartPrimaryFont,
