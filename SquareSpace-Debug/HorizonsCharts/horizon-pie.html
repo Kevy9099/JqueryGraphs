@@ -1,4 +1,5 @@
 <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     .chart-wrapper {
       width: calc(100% - 20px);
@@ -30,25 +31,15 @@
       box-shadow: -1px -1px 2px rgba(73, 73, 73, 0.2) inset;
     }
 
-    .chart-shake {
-      animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-      transform: translate3d(0, 0, 0);
-      backface-visibility: hidden;
-      perspective: 1000px;
-    }
-
     #year-menu {
-      display: flex;
       flex-direction: row;
-      justify-content: center;
-      margin: 20px;
-      width: 100%;
+      align-content: center;
+      display: flex;
     }
 
     .year-menu-button {
       overflow: hidden;
-      margin: 10px !important;
-      padding: 12px 12px;
+      margin: 1px !important;
       cursor: pointer;
       user-select: none;
       transition: all 150ms linear;
@@ -60,7 +51,7 @@
       color: #fff;
       border: 0 none;
       border-radius: 36px;
-      font-size: 13px;
+      font-size: 10px;
       font-weight: 500;
       line-height: 1.3;
       -webkit-appearance: none;
@@ -68,7 +59,7 @@
       appearance: none;
       justify-content: center;
       align-items: center;
-      flex: 0 0 160px;
+      flex: 0 0 42px;
       box-shadow: 2px 5px 10px #e4e4e4;
       background-color: #7999a9;
     }
@@ -83,6 +74,56 @@
       opacity: .70;
     }
 
+    #mobile-indicator {
+      display: inline-block;
+      content: '';
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    @media screen and (min-width: 760px) {
+      #mobile-indicator {
+        display: none;
+      }
+
+      #year-menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 20px;
+        width: 100%;
+      }
+
+      .year-menu-button {
+        overflow: hidden;
+        margin: 10px !important;
+        padding: 12px 12px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 150ms linear;
+        text-align: center;
+        white-space: nowrap;
+        text-decoration: none !important;
+        text-transform: none;
+        text-transform: capitalize;
+        color: #fff;
+        border: 0 none;
+        border-radius: 36px;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.3;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 160px;
+        box-shadow: 2px 5px 10px #e4e4e4;
+        background-color: #7999a9;
+      }
+    }
+
   </style>
 </html>
 
@@ -91,6 +132,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"></script>
+  <div id="mobile-indicator"></div>
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
@@ -100,6 +142,7 @@
     </div>
   </div>
   <script>
+    // chart colors
     let chartLabelColorDark = ["#454545"];
     let chartPrimaryPieColor = [
       "rgba(124,193,196,0.4)",
@@ -123,11 +166,13 @@
     //   "rgba(201,155,127,1)",
     // ];
 
-    // Fonts
+    // chart font
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
 
+    // chart animation duration
     let chartAnimationDuration = 3000;
 
+    // chart data
     let chartData = [
       { 
         year: "FY16",
@@ -166,8 +211,7 @@
       "Misc.",
     ];
 
-    /////////////////////* Global Tools *///////////////////////////////
-    // Handle Hover & Leave Hover
+    // customer hover function
     function chartHandleHover(evt, item, legend) {
       document.getElementById("pieChart1").style.cursor = "pointer";
       legend.chart.data.datasets[0].backgroundColor.forEach(
@@ -189,79 +233,86 @@
       legend.chart.update();
     }
 
-    //////////////////////* Pie Chart 1 *////////////////////////////
-    function pieChart1(selectedData) {
-      let ctx = $("#pieChart1")[0].getContext("2d");
-      let label = chartDonorTypes;
-      let data1 = selectedData ? selectedData : chartData[0].donors;
-      let data = {
-        labels: label,
-        datasets: [
-          {
-            label: "Donor",
-            data: data1,
-            backgroundColor: chartPrimaryPieColor,
-            borderColor: "white",
-            hoverBackgroundColor: chartPrimaryPieColor,
-            borderColor: chartPrimaryPieBorderColor,
-            borderWidth: 2,
-            hoverOffset: 30,
-          },
-        ],
-      };
-      let config = {
-        type: "pie",
-        data: data,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          layout: {
-            padding: 30,
-          },
-          plugins: {
-            legend: {
-              display: true,
-              position: "right",
-              onHover: chartHandleHover,
-              onLeave: chartHandleLeave,
-              labels: {
-                usePointStyle: true,
-                color: chartLabelColorDark,
-                font: {
-                  family: chartPrimaryFont,
-                  weight: "bold",
-                  size: 16,
+    // main function to build pie chart
+    function pieChart(canvasId, label, data1) {
+      function isMobileWidth() {
+        return $('#mobile-indicator').is(':visible');
+      }
+
+      function createChart(legendPosition, legendFontSize) {
+        let ctx = $("#pieChart1")[0].getContext("2d");
+        let data = {
+          labels: label,
+          datasets: [
+            {
+              label: "Donor",
+              data: data1,
+              backgroundColor: chartPrimaryPieColor,
+              borderColor: "white",
+              hoverBackgroundColor: chartPrimaryPieColor,
+              borderColor: chartPrimaryPieBorderColor,
+              borderWidth: 2,
+              hoverOffset: 30,
+            },
+          ],
+        };
+        let config = {
+          type: "pie",
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+              padding: 30,
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: legendPosition,
+                onHover: chartHandleHover,
+                onLeave: chartHandleLeave,
+                labels: {
+                  usePointStyle: true,
+                  color: chartLabelColorDark,
+                  font: {
+                    family: chartPrimaryFont,
+                    weight: "bold",
+                    size: legendFontSize,
+                  },
                 },
               },
+              tooltip: {
+                displayColors: false,
+                callbacks: {
+                    label: function(context) {
+                      let label = context.label || '';
+                      let value = context.formattedValue || '';
+                      return label + ' ' + value + '%';
+                    }
+                },
+                titleFont: {
+                  family: chartPrimaryFont,
+                  weight: "bold",
+                  size: 20,
+                },
+                bodyFont: {
+                  family: chartPrimaryFont,
+                  size: 18,
+                },
+                yAlign: "bottom",
+              },
             },
-            tooltip: {
-              displayColors: false,
-              callbacks: {
-                  label: function(context) {
-                    let label = context.label || '';
-                    let value = context.formattedValue || '';
-                    return label + ' ' + value + '%';
-                  }
-              },
-              titleFont: {
-                family: chartPrimaryFont,
-                weight: "bold",
-                size: 20,
-              },
-              bodyFont: {
-                family: chartPrimaryFont,
-                size: 18,
-              },
-              yAlign: "bottom",
+            animation: {
+              duration: chartAnimationDuration,
             },
           },
-          animation: {
-            duration: chartAnimationDuration,
-          },
-        },
-      };
+        };
+
+        return new Chart(ctx, config);
+      }
       
       let chart;
+      let lastWidthRef;
 
       /* Build year selection menu */
       function buildYearSelectionMenu() {
@@ -287,40 +338,57 @@
         });
       }
   
-      //////////////////////////////* Animation *//////////////////////
-      // IntersectionObserver
+      /* Intersection Observer */
       function callback(entries, observer) {
         entries.forEach((entry) => {
           if (entry.isIntersecting === true) {
-            $("#pieChart1").parent().addClass("chart-shake");
             if (!chart) {
-              chart = new Chart(ctx, config);
               buildYearSelectionMenu();
+              const currentWidthRef = isMobileWidth();
+              if (currentWidthRef) {
+                chart = new createChart("bottom", 16);
+              } else {
+                chart = new createChart("right", 16);
+              }
+
+              lastWidthRef = currentWidthRef;
             }
-          } else {
-            $("#pieChart1").parent().removeClass("chart-shake");
           }
         });
       }
-  
+
       const options = {
         root: null,
-        rootMargin: "0px 0px 0px 0px",
+        rootMargin: "0px",
         threshold: 1.0,
       };
-  
+
       const observer = new IntersectionObserver(callback, options);
-  
-      const target = document.querySelectorAll("#pieChart1");
-      target.forEach((item) => {
-        if (item) {
-          observer.observe(item);
+      const target = document.querySelector(canvasId);
+      observer.observe(target);
+
+      $(window).resize(function() {
+        if (chart) {
+          const currentWidthRef = isMobileWidth();
+        
+          if (lastWidthRef !== currentWidthRef) {
+            chart.destroy();
+            if (currentWidthRef) {
+              chart = new createChart("bottom", 16);
+            } else {
+              chart = new createChart("right", 16);
+            }
+          }
+      
+      
+          lastWidthRef = currentWidthRef;
         }
       });
     }
 
-    $(document).ready(() => {
-      pieChart1();
+    // init function
+    $("document").ready(() => {
+      pieChart("#pieChart1", chartDonorTypes, chartData[0].donors);
     });
   </script>
 </body>

@@ -23,9 +23,8 @@
 
     .chart-item {
       width: calc(80% + 40px);
-      height: calc(600px + 40px);
-      margin: 0 0 20px 20px;
-      padding: 20px;
+      height: calc(750px);
+      margin: 20px;
       background-color: rgba(256, 256, 256, 0.1);
       border: solid 1px white;
       border-radius: 2%;
@@ -57,45 +56,16 @@
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
-        <canvas id="revenuesPieChart" class="chart-animation"></canvas>
+        <canvas id="doubleBarChart1"></canvas>
       </div>
     </div>
   </div>
   <script>
     // chart colors
+    let chartPrimaryColor = ["rgba(0,45,114,1)"]; // Blue
+    let chartSecondaryColor = ["rgba(250,194,31,1)"]; // Yellow
     let chartLabelColorDark = ["#454545"];
-    let chartPrimaryPieColor = [
-      "#7cc1c4",
-      "#ad7fc9",
-      "#c47c7c",
-      "#c9c681",
-      "#7f8dc9",
-      "#b877bf",
-      "#6aa86e",
-      "#c99b7f",
-    ];
-    let chartPrimaryHoverPieColor = [
-      "#7cc1c4",
-      "#ad7fc9",
-      "#c47c7c",
-      "#c9c681",
-      "#7f8dc9",
-      "#b877bf",
-      "#6aa86e",
-      "#c99b7f",
-    ];
-
-    let chartPrimaryPieBorderColor = 'white';
-    /* let chartPrimaryPieBorderColor = [
-      "#7cc1c4",
-      "#ad7fc9",
-      "#c47c7c",
-      "#c9c681",
-      "#7f8dc9",
-      "#b877bf",
-      "#6aa86e",
-      "#c99b7f",
-    ]; */
+    let chartNeutralColorDark = ["#6b6b6b"];
 
     // chart font
     let chartPrimaryFont = ["Lato, Helvetica-Neue, monospace"];
@@ -104,60 +74,48 @@
     let chartAnimationDuration = 2000;
 
     // chart data
-    let chartBudgetedRevenues = [
-      "Tuition & Fees",
-      "Support & Contributions",
-      "Interest & Miscellaneous Income",
+    let chartGivenDonors = [
+      "Parent",
+      "Trustee",
+      "Grandparents",
+      "Faculty/Staff",
+      "Friends/Former Trustees",
+      "Alumni",
     ];
 
-    let chartRevenuesAmount = [13163267, 103500, 59200];
+    let chartGivingFY21 = [80.0, 9.0, 6.0, 2.0, 2.0, 1.0];
+    let chartGivingFY20 = [81.0, 8.0, 8.0, 2.0, 0.5, 0.5];
 
-    // custom hover functions
-    function chartHandleHover(evt, item, legend) {
-      document.getElementById("revenuesPieChart").style.cursor = "pointer";
-      legend.chart.data.datasets[0].backgroundColor.forEach(
-        (color, index, colors) => {
-          colors[index] =
-            index === item.index || color.length === 9 ? color : color + "4D";
-        }
-      );
-      legend.chart.update();
-    }
-
-    function chartHandleLeave(evt, item, legend) {
-      document.getElementById("revenuesPieChart").style.cursor = "default";
-      legend.chart.data.datasets[0].backgroundColor.forEach(
-        (color, index, colors) => {
-          colors[index] = color.length === 9 ? color.slice(0, -2) : color;
-        }
-      );
-      legend.chart.update();
-    }
-
-    // main function to build pie chart, DO NOT TOUCH
-    function revenuesPieChart(canvasId, label, data1) {
+    // chart main function to build bar chart, DO NOT TOUCH
+    function doubleBarChart(canvasId, label, data1, data2) {
       function isMobileWidth() {
         return $('#mobile-indicator').is(':visible');
       }
 
-      function createChart(legendPosition, legendFontSize) {
-        let ctx = $(canvasId)[0].getContext("2d");
+      function createChart(legendPosition, legendFontSize, axisFontSize) {
+        let ctx = $(canvasId);
         let data = {
           labels: label,
           datasets: [
             {
-              label: "Donor",
+              type: "bar",
+              label: "FY20",
               data: data1,
-              backgroundColor: chartPrimaryPieColor,
-              borderColor: chartPrimaryPieBorderColor,
-              hoverBackgroundColor: chartPrimaryPieColor,
+              backgroundColor: chartPrimaryColor,
+              borderRadius: 5,
               borderWidth: 2,
-              hoverOffset: 40,
+            },
+            {
+              type: "bar",
+              label: "FY21",
+              data: data2,
+              backgroundColor: chartSecondaryColor,
+              borderRadius: 5,
+              borderWidth: 2,
             },
           ],
         };
         let config = {
-          type: "pie",
           data: data,
           options: {
             responsive: true,
@@ -169,31 +127,23 @@
               legend: {
                 display: true,
                 position: legendPosition,
-                onHover: chartHandleHover,
-                onLeave: chartHandleLeave,
+                fullWidth: true,
+                align: "center",
                 labels: {
-                  usePointStyle: true,
-                  color: chartLabelColorDark,
                   font: {
-                    family: chartPrimaryFont,
-                    weight: "bold",
                     size: legendFontSize,
-                  },
+                  }
                 },
               },
               tooltip: {
-                displayColors: false,
                 callbacks: {
                     label: function(context) {
-                      let label = context.label || '';
+                      let label = context.dataset.label || '';
                       let value = context.formattedValue || '';
-                      if (legendPosition === "bottom") {
-                        return '$' + value;
-                      } else {
-                        return label + ' $' + value;
-                      }
+                      return label + ' ' + value + '%';
                     }
                 },
+                displayColors: false,
                 titleFont: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -206,6 +156,63 @@
                 yAlign: "bottom",
               },
             },
+            scales: {
+              y: {
+                beginAtZero: true,
+                min: 0,
+                max: 90,
+                ticks: {
+                  color: chartLabelColorDark,
+                  callback: function (value) {
+                    return (value / 100) * 100 + "%";
+                  },
+                  font: {
+                    family: chartPrimaryFont,
+                    weight: "bold",
+                    size: axisFontSize,
+                  },
+                },
+                title: {
+                  display: true,
+                  text: "Given Percentage",
+                  color: chartNeutralColorDark,
+                  font: {
+                    family: chartPrimaryFont,
+                    weight: "bold",
+                    size: axisFontSize,
+                  },
+                },
+                grid: {
+                  color: chartNeutralColorDark,
+                },
+              },
+              x: {
+                beginAtZero: true,
+                ticks: {
+                  color: chartLabelColorDark,
+                  font: {
+                    family: chartPrimaryFont,
+                    weight: "bold",
+                    size: axisFontSize,
+                  },
+                  maxRotation: 90,
+                  minRotation: 90,
+                },
+                title: {
+                  display: true,
+                  text: "Donor Type",
+                  color: chartNeutralColorDark,
+                  font: {
+                    family: chartPrimaryFont,
+                    weight: "bold",
+                    size: axisFontSize,
+                  },
+                },
+                grid: {
+                  color: chartNeutralColorDark,
+                },
+              },
+            },
             animation: {
               duration: chartAnimationDuration,
             },
@@ -214,10 +221,10 @@
 
         return new Chart(ctx, config);
       }
-
+      
       let chart;
       let lastWidthRef;
-  
+      
       /* Intersection Observer */
       function callback(entries, observer) {
         entries.forEach((entry) => {
@@ -225,9 +232,9 @@
             if (!chart) {
               const currentWidthRef = isMobileWidth();
               if (currentWidthRef) {
-                chart = new createChart("bottom", 12);
+                chart = new createChart("bottom", 30, 12);
               } else {
-                chart = new createChart("right", 16);
+                chart = new createChart("right", 16, 24);
               }
 
               lastWidthRef = currentWidthRef;
@@ -253,9 +260,9 @@
           if (lastWidthRef !== currentWidthRef) {
             chart.destroy();
             if (currentWidthRef) {
-              chart = new createChart("bottom", 12);
+              chart = new createChart("bottom", 30, 12);
             } else {
-              chart = new createChart("right", 16);
+              chart = new createChart("right", 16, 24);
             }
           }
       
@@ -266,8 +273,8 @@
     }
 
     // init function
-    $("document").ready(() => {
-      revenuesPieChart("#revenuesPieChart", chartBudgetedRevenues, chartRevenuesAmount);
+    $(document).ready(() => {
+      doubleBarChart("#doubleBarChart1", chartGivenDonors, chartGivingFY20, chartGivingFY21);
     });
   </script>
 </body>

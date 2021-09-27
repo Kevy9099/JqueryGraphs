@@ -57,7 +57,7 @@
   <div class="chart-wrapper">
     <div class="charts-list">
       <div class="chart-item">
-        <canvas id="revenuesPieChart" class="chart-animation"></canvas>
+        <canvas id="polarAreaChart1" class="chart-animation"></canvas>
       </div>
     </div>
   </div>
@@ -65,36 +65,26 @@
     // chart colors
     let chartLabelColorDark = ["#454545"];
     let chartPrimaryPieColor = [
-      "#7cc1c4",
-      "#ad7fc9",
-      "#c47c7c",
-      "#c9c681",
-      "#7f8dc9",
-      "#b877bf",
-      "#6aa86e",
-      "#c99b7f",
-    ];
-    let chartPrimaryHoverPieColor = [
-      "#7cc1c4",
-      "#ad7fc9",
-      "#c47c7c",
-      "#c9c681",
-      "#7f8dc9",
-      "#b877bf",
-      "#6aa86e",
-      "#c99b7f",
+      "rgba(124,193,196,0.4)",
+      "rgba(173,127,201,0.4)",
+      "rgba(196,124,124,0.4)",
+      "rgba(201,198,129,0.4)",
+      "rgba(127,141,201,0.4)",
+      "rgba(184,119,191,0.4)",
+      "rgba(106,168,110,0.4)",
+      "rgba(201,155,127,0.4)",
     ];
 
     let chartPrimaryPieBorderColor = 'white';
     /* let chartPrimaryPieBorderColor = [
-      "#7cc1c4",
-      "#ad7fc9",
-      "#c47c7c",
-      "#c9c681",
-      "#7f8dc9",
-      "#b877bf",
-      "#6aa86e",
-      "#c99b7f",
+      "rgba(124,193,196,1)",
+      "rgba(173,127,201,1)",
+      "rgba(196,124,124,1)",
+      "rgba(201,198,129,1)",
+      "rgba(127,141,201,1)",
+      "rgba(184,119,191,1)",
+      "rgba(106,168,110,1)",
+      "rgba(201,155,127,1)",
     ]; */
 
     // chart font
@@ -104,76 +94,77 @@
     let chartAnimationDuration = 2000;
 
     // chart data
-    let chartBudgetedRevenues = [
-      "Tuition & Fees",
-      "Support & Contributions",
-      "Interest & Miscellaneous Income",
+    const chartMonthNames = [
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
     ];
 
-    let chartRevenuesAmount = [13163267, 103500, 59200];
+    const chartMonthlyFunds = [
+      50.0, 98966.0, 222302.0, 814409.52, 123268.03, 240959.5, 107754.29,
+      65195.0, 260791.76, 189788.0, 210500.0, 20625.97,
+    ];
 
-    // custom hover functions
-    function chartHandleHover(evt, item, legend) {
-      document.getElementById("revenuesPieChart").style.cursor = "pointer";
-      legend.chart.data.datasets[0].backgroundColor.forEach(
-        (color, index, colors) => {
-          colors[index] =
-            index === item.index || color.length === 9 ? color : color + "4D";
-        }
-      );
-      legend.chart.update();
-    }
-
-    function chartHandleLeave(evt, item, legend) {
-      document.getElementById("revenuesPieChart").style.cursor = "default";
-      legend.chart.data.datasets[0].backgroundColor.forEach(
-        (color, index, colors) => {
-          colors[index] = color.length === 9 ? color.slice(0, -2) : color;
-        }
-      );
-      legend.chart.update();
-    }
-
-    // main function to build pie chart, DO NOT TOUCH
-    function revenuesPieChart(canvasId, label, data1) {
+    // chart main function to build polar area chart, DO NOT TOUCH
+    function polarAreaChart(canvasId, label, data1) {
       function isMobileWidth() {
         return $('#mobile-indicator').is(':visible');
       }
 
       function createChart(legendPosition, legendFontSize) {
+        console.log(legendPosition, legendFontSize);
         let ctx = $(canvasId)[0].getContext("2d");
         let data = {
           labels: label,
           datasets: [
             {
-              label: "Donor",
+              label: "",
               data: data1,
               backgroundColor: chartPrimaryPieColor,
-              borderColor: chartPrimaryPieBorderColor,
+              borderColor: "white",
               hoverBackgroundColor: chartPrimaryPieColor,
-              borderWidth: 2,
-              hoverOffset: 40,
+              borderColor: chartPrimaryPieBorderColor,
+              borderRadius: 4,
+              hoverOffset: 30,
+              tickWidth: 20,
             },
           ],
         };
         let config = {
-          type: "pie",
+          type: "polarArea",
           data: data,
           options: {
-            responsive: true,
             maintainAspectRatio: false,
-            layout: {
-              padding: 30,
+            responsive: true,
+            scales: {
+              r: {
+                ticks: {
+                  // Include a dollar sign in the ticks
+                  callback: function(value, index, values) {
+                    return '$' + value.toLocaleString('en-US', {maximumFractionDigits:2})
+                  }
+                },
+              },
             },
             plugins: {
               legend: {
                 display: true,
                 position: legendPosition,
-                onHover: chartHandleHover,
-                onLeave: chartHandleLeave,
+                align: "center",
                 labels: {
+                  padding: 15,
                   usePointStyle: true,
                   color: chartLabelColorDark,
+                  textAlign: "center",
                   font: {
                     family: chartPrimaryFont,
                     weight: "bold",
@@ -182,18 +173,14 @@
                 },
               },
               tooltip: {
-                displayColors: false,
                 callbacks: {
                     label: function(context) {
-                      let label = context.label || '';
+                      let label = context.dataset.label || '';
                       let value = context.formattedValue || '';
-                      if (legendPosition === "bottom") {
-                        return '$' + value;
-                      } else {
-                        return label + ' $' + value;
-                      }
+                      return label + ' $' + value;
                     }
                 },
+                displayColors: false,
                 titleFont: {
                   family: chartPrimaryFont,
                   weight: "bold",
@@ -214,10 +201,10 @@
 
         return new Chart(ctx, config);
       }
-
+      
       let chart;
       let lastWidthRef;
-  
+      
       /* Intersection Observer */
       function callback(entries, observer) {
         entries.forEach((entry) => {
@@ -225,7 +212,7 @@
             if (!chart) {
               const currentWidthRef = isMobileWidth();
               if (currentWidthRef) {
-                chart = new createChart("bottom", 12);
+                chart = new createChart("bottom", 18);
               } else {
                 chart = new createChart("right", 16);
               }
@@ -253,7 +240,7 @@
           if (lastWidthRef !== currentWidthRef) {
             chart.destroy();
             if (currentWidthRef) {
-              chart = new createChart("bottom", 12);
+              chart = new createChart("bottom", 20);
             } else {
               chart = new createChart("right", 16);
             }
@@ -267,7 +254,7 @@
 
     // init function
     $("document").ready(() => {
-      revenuesPieChart("#revenuesPieChart", chartBudgetedRevenues, chartRevenuesAmount);
+      polarAreaChart("#polarAreaChart1", chartMonthNames, chartMonthlyFunds);
     });
   </script>
 </body>
